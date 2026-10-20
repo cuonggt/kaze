@@ -13,10 +13,10 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         stack: [hotwire, react, vue]
-        rails: [8.0]
+        rails: [8.1]
 
     name: Test Stubs - Rails ${{ matrix.rails }} - ${{ matrix.stack }}
 
@@ -24,7 +24,7 @@ jobs:
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.3.0
+          ruby-version: 3.4
           bundler-cache: true
 
       - name: Setup Rails
