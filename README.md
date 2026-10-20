@@ -13,7 +13,7 @@ Kaze provides scaffolding options based on [Hotwire](https://hotwired.dev) or [I
 Before creating your first project powered by Kaze, make sure that your local machine has Ruby installed. Ruby can be installed in minutes via [mise](https://mise.jdx.dev).
 
 ```
-mise use -g ruby@3.3
+mise use -g ruby@3.4
 ```
 
 After you have installed Ruby, you may install `rails` and `kaze` gems globally:
