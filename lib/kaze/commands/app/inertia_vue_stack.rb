@@ -66,15 +66,18 @@ class Kaze::Commands::App::InertiaVueStack < Kaze::Commands::App::BaseStack
     say ''
     say 'Installing and building Node dependencies.', :magenta
 
-    if File.exist?("#{Dir.pwd}/pnpm-lock.yaml")
-      run_commands([ 'pnpm install', 'pnpm run build' ])
-    elsif File.exist?("#{Dir.pwd}/yarn.lock")
-      run_commands([ 'yarn install', 'yarn build' ])
-    elsif File.exist?("#{Dir.pwd}/bun.lock") || File.exist?("#{Dir.pwd}/bun.lockb")
-      run_commands([ 'bun install', 'bun run build' ])
-    else
-      run_commands([ 'npm install', 'npm run build' ])
-    end
+    node_dependencies_installed =
+      if File.exist?("#{Dir.pwd}/pnpm-lock.yaml")
+        run_commands([ 'pnpm install', 'pnpm run build' ])
+      elsif File.exist?("#{Dir.pwd}/yarn.lock")
+        run_commands([ 'yarn install', 'yarn build' ])
+      elsif File.exist?("#{Dir.pwd}/bun.lock") || File.exist?("#{Dir.pwd}/bun.lockb")
+        run_commands([ 'bun install', 'bun run build' ])
+      else
+        run_commands([ 'npm install', 'npm run build' ])
+      end
+
+    return unless node_dependencies_installed
 
     say ''
     say 'Kaze scaffolding installed successfully.', :green
