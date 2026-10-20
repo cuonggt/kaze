@@ -10,7 +10,7 @@ class Kaze::Commands::App::BaseStack
   private
 
   def bundle_command
-    @bundle_command ||= File.exist?("#{Dir.pwd}/bin/bundle") ? "#{Dir.pwd}/bin/bundle" : "bundle"
+    @bundle_command ||= File.exist?("#{Dir.pwd}/bin/bundle") ? "#{Dir.pwd}/bin/bundle" : 'bundle'
   end
 
   def install_gems(gems = [], group = nil)
