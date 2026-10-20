@@ -3,7 +3,7 @@ class Kaze::Commands::App::HotwireStack < Kaze::Commands::App::BaseStack
     # Gems...
     return unless remove_gems([ 'sprockets-rails', 'stimulus-rails' ])
     return unless install_gems([ 'propshaft', 'view_component', 'turbo-rails', 'dotenv', 'bcrypt' ])
-    return unless run_command("#{bundle_command} add tailwindcss-rails --version=\"~> 3.0\"").success?
+    return unless run_command("#{bundle_command} add tailwindcss-rails --version=\"~> 4.0\"").success?
     return unless install_gems([ 'hotwire-livereload' ], 'development')
     return unless install_gems([ 'factory_bot_rails', 'faker' ], 'development, test')
 
@@ -52,8 +52,8 @@ class Kaze::Commands::App::HotwireStack < Kaze::Commands::App::BaseStack
 
     # Tailwind...
     FileUtils.copy_file("#{stubs_path}/default/app/assets/stylesheets/application.css", "#{Dir.pwd}/app/assets/stylesheets/application.css")
-    FileUtils.copy_file("#{stubs_path}/default/app/assets/stylesheets/application.tailwind.css", "#{Dir.pwd}/app/assets/stylesheets/application.tailwind.css")
-    FileUtils.copy_file("#{stubs_path}/hotwire/config/tailwind.config.js", "#{Dir.pwd}/config/tailwind.config.js")
+    ensure_directory_exists("#{Dir.pwd}/app/assets/tailwind")
+    FileUtils.copy_file("#{stubs_path}/hotwire/app/assets/tailwind/application.css", "#{Dir.pwd}/app/assets/tailwind/application.css")
     FileUtils.copy_file("#{stubs_path}/default/bin/dev", "#{Dir.pwd}/bin/dev")
     FileUtils.copy_file("#{stubs_path}/default/Procfile.dev", "#{Dir.pwd}/Procfile.dev")
     return unless run_command("#{Dir.pwd}/bin/rails tailwindcss:build").success?

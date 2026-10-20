@@ -6,7 +6,7 @@
     <title><%= content_for(:title) || "Rails" %></title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": Rails.env.production? ? "reload" : "" %>
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": Rails.env.production? ? "reload" : "" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": Rails.env.production? ? "reload" : "" %>
     <%= javascript_importmap_tags %>
     <%= turbo_refreshes_with method: :morph, scroll: :preserve %>
@@ -17,7 +17,7 @@
       <%= render "layouts/navigation" %>
       <!-- Page Heading -->
       <% if content_for?(:header) %>
-        <header class="bg-white dark:bg-gray-800 shadow">
+        <header class="bg-white dark:bg-gray-800 shadow-sm">
           <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
             <%= yield :header %>
           </div>
