@@ -13,10 +13,10 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         stack: [hotwire, react, vue]
-        rails: [8.0]
+        rails: [8.1]
 
     name: Test Stubs - Rails ${{ matrix.rails }} - ${{ matrix.stack }}
 
