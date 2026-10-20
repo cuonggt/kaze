@@ -3,7 +3,7 @@ class Kaze::Commands::App::HotwireStack < Kaze::Commands::App::BaseStack
     # Gems...
     return unless remove_gems([ 'sprockets-rails', 'stimulus-rails' ])
     return unless install_gems([ 'propshaft', 'view_component', 'turbo-rails', 'dotenv', 'bcrypt' ])
-    run_command("#{bundle_command} add tailwindcss-rails --version=\"~> 3.0\"")
+    return unless run_command("#{bundle_command} add tailwindcss-rails --version=\"~> 3.0\"").success?
     return unless install_gems([ 'hotwire-livereload' ], 'development')
     return unless install_gems([ 'factory_bot_rails', 'faker' ], 'development, test')
 
@@ -56,7 +56,7 @@ class Kaze::Commands::App::HotwireStack < Kaze::Commands::App::BaseStack
     FileUtils.copy_file("#{stubs_path}/hotwire/config/tailwind.config.js", "#{Dir.pwd}/config/tailwind.config.js")
     FileUtils.copy_file("#{stubs_path}/default/bin/dev", "#{Dir.pwd}/bin/dev")
     FileUtils.copy_file("#{stubs_path}/default/Procfile.dev", "#{Dir.pwd}/Procfile.dev")
-    run_command("#{Dir.pwd}/bin/rails tailwindcss:build")
+    return unless run_command("#{Dir.pwd}/bin/rails tailwindcss:build").success?
 
     say ''
     say 'Kaze scaffolding installed successfully.', :green

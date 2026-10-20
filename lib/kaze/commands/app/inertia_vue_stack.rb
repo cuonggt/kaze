@@ -3,7 +3,7 @@ class Kaze::Commands::App::InertiaVueStack < Kaze::Commands::App::BaseStack
     # Gems...
     return unless remove_gems([ 'sprockets-rails', 'turbo-rails', 'stimulus-rails' ])
     return unless install_gems([ 'propshaft', 'inertia_rails', 'vite_rails', 'dotenv', 'bcrypt', 'js-routes' ])
-    run_command("#{bundle_command} add tailwindcss-rails --version=\"~> 3.0\"")
+    return unless run_command("#{bundle_command} add tailwindcss-rails --version=\"~> 3.0\"").success?
     return unless install_gems([ 'factory_bot_rails', 'faker' ], 'development, test')
 
     # NPM Packages...
@@ -61,7 +61,7 @@ class Kaze::Commands::App::InertiaVueStack < Kaze::Commands::App::BaseStack
     FileUtils.copy_file("#{stubs_path}/default/Procfile.dev", "#{Dir.pwd}/Procfile.dev")
     replace_in_file('#vite: bin/vite dev', 'vite: bin/vite dev', "#{Dir.pwd}/Procfile.dev")
     run_command("#{Dir.pwd}/bin/rails generate js_routes:middleware")
-    run_command("#{Dir.pwd}/bin/rails tailwindcss:build")
+    return unless run_command("#{Dir.pwd}/bin/rails tailwindcss:build").success?
 
     say ''
     say 'Installing and building Node dependencies.', :magenta
