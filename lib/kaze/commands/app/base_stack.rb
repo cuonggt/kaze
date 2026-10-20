@@ -65,14 +65,16 @@ class Kaze::Commands::App::BaseStack
 
   def run_command(command)
     Open3.popen3(command) do |stdin, stdout, stderr, wait_thr|
+      stdout.set_encoding(Encoding::UTF_8)
+      stderr.set_encoding(Encoding::UTF_8)
       stdout_thread = Thread.new do
         while line = stdout.gets do
-          say line
+          say line.scrub
         end
       end
       stderr_thread = Thread.new do
         while line = stderr.gets do
-          say line, :red
+          say line.scrub, :red
         end
       end
       stdout_thread.join
