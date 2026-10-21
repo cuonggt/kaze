@@ -23,6 +23,8 @@ gem install rails
 gem install kaze
 ```
 
+Kaze is tested against Rails 8.1 on Ruby 3.4. Rails 8.0 is not supported: ActiveSupport 8.0 passes a `quirks_mode:` option to `JSON.generate` that the `json` gem removed in version 3, which breaks session cookies and `js-routes` in any application built on it. The incompatibility is fixed in Rails 8.1.
+
 Then, you may create a new Rails application:
 
 ```
