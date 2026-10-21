@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [1.3.1] - 2026-10-21
+
+### Changed
+
+- `required_ruby_version` is now `>= 3.4.0`, up from `>= 3.1.0`. Rails 8.1 cannot be parsed by Ruby 3.3 — actionview uses syntax Ruby 3.4 introduced — so a Kaze-scaffolded application has never actually worked below 3.4, and the gem page advertised a floor that the README already contradicted.
+
 ## [1.3.0] - 2026-10-21
 
 ### Changed
@@ -102,7 +108,8 @@ Together these take a freshly scaffolded Inertia application from seven npm advi
 
 Releases before 1.0.0 are not catalogued here. See the [tags](https://github.com/cuonggt/kaze/tags) for their history.
 
-[Unreleased]: https://github.com/cuonggt/kaze/compare/v1.3.0...HEAD
+[Unreleased]: https://github.com/cuonggt/kaze/compare/v1.3.1...HEAD
+[1.3.1]: https://github.com/cuonggt/kaze/compare/v1.3.0...v1.3.1
 [1.3.0]: https://github.com/cuonggt/kaze/compare/v1.2.1...v1.3.0
 [1.2.1]: https://github.com/cuonggt/kaze/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/cuonggt/kaze/compare/v1.1.0...v1.2.0
