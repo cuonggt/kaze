@@ -6,12 +6,30 @@
     <title><%= content_for(:title) || "Rails" %></title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <%# Apply the stored appearance before first paint, so the page never flashes the wrong theme. %>
+    <%= javascript_tag nonce: true do %>
+      (function () {
+        var preference = localStorage.getItem('appearance') || 'system'
+        var query = window.matchMedia('(prefers-color-scheme: dark)')
+
+        document.documentElement.classList.toggle(
+          'dark',
+          preference === 'dark' || (preference === 'system' && query.matches)
+        )
+
+        query.addEventListener('change', function () {
+          if ((localStorage.getItem('appearance') || 'system') === 'system') {
+            document.documentElement.classList.toggle('dark', query.matches)
+          }
+        })
+      })()
+    <% end %>
     <%= vite_client_tag %>
     <%= vite_react_refresh_tag %>
     <%= vite_typescript_tag 'application.tsx', defer: true %>
   </head>
   <body class="font-sans antialiased">
-    <div class="min-h-screen bg-gray-100">
+    <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
       <%= yield %>
     </div>
   </body>
