@@ -1,19 +1,15 @@
 <script setup lang="ts">
-import type { Component, HTMLAttributes } from 'vue'
+import type { PrimitiveProps } from 'reka-ui'
+import type { HTMLAttributes } from 'vue'
 import type { ButtonVariants } from '.'
 import { Primitive } from 'reka-ui'
 import { cn } from '@/lib/utils'
 import { buttonVariants } from '.'
 
-// Upstream extends reka-ui's PrimitiveProps here. The SFC compiler cannot
-// resolve types imported across packages in this build, so the two props it
-// contributes are declared inline instead.
-interface Props {
+interface Props extends PrimitiveProps {
   variant?: ButtonVariants['variant']
   size?: ButtonVariants['size']
   class?: HTMLAttributes['class']
-  as?: string | Component
-  asChild?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -24,6 +20,8 @@ const props = withDefaults(defineProps<Props>(), {
 <template>
   <Primitive
     data-slot="button"
+    :data-variant="variant"
+    :data-size="size"
     :as="as"
     :as-child="asChild"
     :class="cn(buttonVariants({ variant, size }), props.class)"

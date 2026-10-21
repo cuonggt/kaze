@@ -1,9 +1,16 @@
 <script setup lang="ts">
 import InputError from '@/Components/InputError.vue'
 import { Button } from '@/Components/ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/Components/ui/dialog'
 import { Input } from '@/Components/ui/input'
 import { Label } from '@/Components/ui/label'
-import Modal from '@/Components/Modal.vue'
 import { useForm } from '@inertiajs/vue3'
 import { nextTick, ref } from 'vue'
 import { profile_destroy_path } from '@/routes'
@@ -53,16 +60,16 @@ const closeModal = () => {
 
     <Button variant="destructive" @click="confirmUserDeletion">Delete Account</Button>
 
-    <Modal :show="confirmingUserDeletion" @close="closeModal">
-      <div class="p-6">
-        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-          Are you sure you want to delete your account?
-        </h2>
+    <Dialog v-model:open="confirmingUserDeletion">
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Are you sure you want to delete your account?</DialogTitle>
 
-        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-          Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your
-          password to confirm you would like to permanently delete your account.
-        </p>
+          <DialogDescription>
+            Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your
+            password to confirm you would like to permanently delete your account.
+          </DialogDescription>
+        </DialogHeader>
 
         <div class="mt-6">
           <Label for="password" class="sr-only">Password</Label>
@@ -80,20 +87,19 @@ const closeModal = () => {
           <InputError :message="form.errors.password" class="mt-2" />
         </div>
 
-        <div class="mt-6 flex justify-end">
+        <DialogFooter>
           <Button variant="outline" @click="closeModal"> Cancel </Button>
 
           <Button
             variant="destructive"
-            class="ms-3"
             :class="{ 'opacity-25': form.processing }"
             :disabled="form.processing"
             @click="deleteUser"
           >
             Delete Account
           </Button>
-        </div>
-      </div>
-    </Modal>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   </section>
 </template>
