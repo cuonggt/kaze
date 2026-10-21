@@ -56,6 +56,7 @@ class Kaze::Commands::App::InertiaReactStack < Kaze::Commands::App::BaseStack
     FileUtils.copy_file("#{stubs_path}/inertia-common/config/vite.json", "#{Dir.pwd}/config/vite.json")
     ensure_directory_exists("#{Dir.pwd}/config/initializers")
     FileUtils.copy_file("#{stubs_path}/inertia-common/config/initializers/inertia_rails.rb", "#{Dir.pwd}/config/initializers/inertia_rails.rb")
+    FileUtils.copy_file("#{stubs_path}/inertia-react-ts/components.json", "#{Dir.pwd}/components.json")
     FileUtils.copy_file("#{stubs_path}/inertia-react-ts/tsconfig.json", "#{Dir.pwd}/tsconfig.json")
     FileUtils.copy_file("#{stubs_path}/inertia-react-ts/vite.config.ts", "#{Dir.pwd}/vite.config.ts")
     FileUtils.copy_file("#{stubs_path}/default/bin/dev", "#{Dir.pwd}/bin/dev")
@@ -63,7 +64,8 @@ class Kaze::Commands::App::InertiaReactStack < Kaze::Commands::App::BaseStack
     FileUtils.copy_file("#{stubs_path}/default/Procfile.dev", "#{Dir.pwd}/Procfile.dev")
     replace_in_file('#vite: bin/vite dev', 'vite: bin/vite dev', "#{Dir.pwd}/Procfile.dev")
     run_command("#{Dir.pwd}/bin/rails generate js_routes:middleware")
-    return unless run_command("#{Dir.pwd}/bin/rails tailwindcss:build").success?
+    # The CSS is built by `npm run build` below, once node_modules exists --
+    # the stylesheet imports tw-animate-css, which cannot resolve before then.
 
     say ''
     say 'Installing and building Node dependencies.', :magenta
