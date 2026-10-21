@@ -6,17 +6,17 @@
     "build": "tsc && bin/rails tailwindcss:build && vite build"
   },
   "devDependencies": {
-    "@headlessui/react": "^2.0.4",
-    "@inertiajs/react": "^2.0.0",
-    "@types/node": "^18.13.0",
-    "@types/react": "^18.0.28",
-    "@types/react-dom": "^18.0.10",
-    "@vitejs/plugin-react": "^4.2.0",
+    "@headlessui/react": "^2.2.10",
+    "@inertiajs/react": "^3.9.1",
+    "@types/node": "^26.6.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
     "axios": "^1.6.4",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "typescript": "^5.6.3",
-    "vite": "^6.4.4",
-    "vite-plugin-rails": "^0.5.0"
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.4",
+    "vite-plugin-rails": "^0.6.0"
   }
 }

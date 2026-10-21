@@ -2,30 +2,25 @@ import './bootstrap'
 import '../../assets/builds/tailwind.css'
 
 import { createRoot } from 'react-dom/client'
-import { createInertiaApp } from '@inertiajs/react'
+import { createInertiaApp, type ResolvedComponent } from '@inertiajs/react'
 
-async function resolvePageComponent<T>(
-  path: string | string[],
-  pages: Record<string, Promise<T> | (() => Promise<T>)>,
-): Promise<T> {
-  for (const p of Array.isArray(path) ? path : [path]) {
-    const page = pages[p]
+const pages = import.meta.glob<{ default: ResolvedComponent }>('../Pages/**/*.tsx')
 
-    if (typeof page === 'undefined') {
-      continue
-    }
+async function resolvePageComponent(name: string): Promise<ResolvedComponent> {
+  const page = pages[`../Pages/${name}.tsx`]
 
-    return typeof page === 'function' ? page() : page
+  if (typeof page === 'undefined') {
+    throw new Error(`Page not found: ${name}`)
   }
 
-  throw new Error(`Page not found: ${path}`)
+  return (await page()).default
 }
 
 const appName = import.meta.env.VITE_APP_NAME || 'Rails'
 
 createInertiaApp({
   title: (title) => `${title} - ${appName}`,
-  resolve: (name) => resolvePageComponent(`../Pages/${name}.tsx`, import.meta.glob('../Pages/**/*.tsx')),
+  resolve: resolvePageComponent,
   setup({ el, App, props }) {
     const root = createRoot(el)
 
