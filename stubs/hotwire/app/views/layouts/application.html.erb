@@ -14,20 +14,29 @@
     <%= yield :head %>
   </head>
   <body class="font-sans antialiased">
-    <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
-      <%= render "layouts/navigation" %>
-      <!-- Page Heading -->
-      <% if content_for?(:header) %>
-        <header class="bg-white dark:bg-gray-800 shadow-sm">
-          <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-            <%= yield :header %>
-          </div>
-        </header>
-      <% end %>
-      <!-- Page Content -->
-      <main>
-        <%= yield %>
-      </main>
+    <%# `sidebarOpen` is the rail's state at md and up, `sidebarOpenMobile` the drawer's below
+        it. One trigger drives whichever applies, and the rail's state is kept in
+        a cookie so the next page renders the way this one was left. %>
+    <div
+      x-data="{
+        sidebarOpen: <%= sidebar_open? %>,
+        sidebarOpenMobile: false,
+        toggle() {
+          if (window.matchMedia('(max-width: 767px)').matches) {
+            this.sidebarOpenMobile = ! this.sidebarOpenMobile
+            return
+          }
+          this.sidebarOpen = ! this.sidebarOpen
+          document.cookie = 'sidebar_state=' + this.sidebarOpen + '; path=/; max-age=604800; samesite=lax'
+        }
+      }"
+      class="flex min-h-svh w-full bg-sidebar"
+    >
+      <%= render "layouts/sidebar" %>
+      <div class="relative flex min-h-svh flex-1 flex-col overflow-hidden bg-background md:m-2 md:ml-0 md:rounded-xl md:shadow-sm">
+        <%= render "layouts/sidebar_header" %>
+        <main class="min-w-0 flex-1"><%= yield %></main>
+      </div>
     </div>
   </body>
 </html>

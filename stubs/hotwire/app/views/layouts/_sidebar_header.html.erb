@@ -1,0 +1,11 @@
+<%# The bar above the page content: the rail trigger, then the page's own
+    breadcrumbs. %>
+<header class="flex h-16 shrink-0 items-center gap-2 border-b border-sidebar-border/50 px-6 transition-[width,height] ease-linear md:px-4">
+  <div class="flex items-center gap-2">
+    <button x-on:click="toggle()" class="-ml-1 inline-flex size-7 items-center justify-center rounded-md hover:bg-accent hover:text-accent-foreground" aria-label="Toggle sidebar">
+      <span x-show="sidebarOpen"><%= render(IconComponent.new('panel-left-close')) %></span>
+      <span x-show="! sidebarOpen" style="display: none;"><%= render(IconComponent.new('panel-left-open')) %></span>
+    </button>
+    <%= yield :breadcrumbs %>
+  </div>
+</header>
