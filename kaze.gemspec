@@ -5,7 +5,7 @@ Gem::Specification.new do |spec|
   spec.version = Kaze::VERSION
   spec.authors = [ "Cuong Giang" ]
   spec.email = [ "thaicuong.giang@gmail.com" ]
-  spec.homepage = "https://github.com/gtkvn/kaze"
+  spec.homepage = "https://github.com/cuonggt/kaze"
   spec.summary = "Opinionated minimal Rails authentication scaffolding with Hotwire, React, or Vue + Tailwind."
   spec.license = "MIT"
   spec.files = Dir["lib/**/*", "stubs/**/*", "CHANGELOG.md", "LICENSE.md", "README.md"]
