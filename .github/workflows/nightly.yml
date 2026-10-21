@@ -1,0 +1,14 @@
+name: nightly
+
+# The cron lives here on its own, deliberately. GitHub disables a workflow that
+# carries a schedule: trigger after 60 days without repository activity, and
+# that disables its push and pull_request triggers along with it -- which is how
+# CI came to be switched off without anyone noticing. Keeping the schedule out
+# of tests.yml means an idle stretch can cost the nightly run and nothing else.
+on:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  tests:
+    uses: ./.github/workflows/tests.yml
