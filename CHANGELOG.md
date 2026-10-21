@@ -6,6 +6,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Added
+
+- An appearance preference — light, dark or system — on the profile page of all three stacks ([#26](https://github.com/cuonggt/kaze/pull/26)). The stubs already carried 315 `dark:` classes, but nothing could reach them: `dark:` followed `prefers-color-scheme`, so an application took whatever the operating system said. The choice is stored in `localStorage`, and system follows the device and tracks it live.
+
+  Each stylesheet now redefines the variant, since Tailwind v4 no longer configures dark mode in JavaScript:
+
+  ```css
+  @custom-variant dark (&:where(.dark, .dark *));
+  ```
+
+  The layouts apply the resulting `dark` class in an inline `<head>` script before first paint, so the page never flashes the wrong theme. A consequence worth knowing: the theme now depends on JavaScript, so with scripting disabled an application always renders light where it previously followed the operating system.
+
+### Fixed
+
+- Dark mode gaps that were already broken for anyone whose operating system was set to dark, and which the preference control made obvious. React's `AuthenticatedLayout` carried one `dark:` class where Vue's had fifteen, leaving a white navigation bar and header above a dark page; the missing variants are ported from the Vue layout. Four wrappers lacked `dark:bg-gray-900`, leaving a light grey page behind dark cards — hotwire's application layout, React's `AuthenticatedLayout` and `GuestLayout`, and the Inertia ERB wrappers for both stacks.
+
 ## [1.3.1] - 2026-10-21
 
 ### Changed
