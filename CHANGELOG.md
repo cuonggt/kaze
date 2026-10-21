@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [1.4.0] - 2026-10-21
+
 ### Added
 
 - An appearance preference — light, dark or system — on the profile page of all three stacks ([#26](https://github.com/cuonggt/kaze/pull/26)). The stubs already carried 315 `dark:` classes, but nothing could reach them: `dark:` followed `prefers-color-scheme`, so an application took whatever the operating system said. The choice is stored in `localStorage`, and system follows the device and tracks it live.
@@ -124,7 +126,8 @@ Together these take a freshly scaffolded Inertia application from seven npm advi
 
 Releases before 1.0.0 are not catalogued here. See the [tags](https://github.com/cuonggt/kaze/tags) for their history.
 
-[Unreleased]: https://github.com/cuonggt/kaze/compare/v1.3.1...HEAD
+[Unreleased]: https://github.com/cuonggt/kaze/compare/v1.4.0...HEAD
+[1.4.0]: https://github.com/cuonggt/kaze/compare/v1.3.1...v1.4.0
 [1.3.1]: https://github.com/cuonggt/kaze/compare/v1.3.0...v1.3.1
 [1.3.0]: https://github.com/cuonggt/kaze/compare/v1.2.1...v1.3.0
 [1.2.1]: https://github.com/cuonggt/kaze/compare/v1.2.0...v1.2.1
