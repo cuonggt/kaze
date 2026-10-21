@@ -3,7 +3,7 @@
 /* Drive `dark:` from a `dark` class rather than prefers-color-scheme, so the
    appearance preference can override the operating system. The layouts apply
    the class before first paint. */
-@custom-variant dark (&:where(.dark, .dark *));
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
