@@ -55,3 +55,16 @@ jobs:
         run: |
           bundle exec rails db:prepare
           bundle exec rake test
+
+  stub-tests-complete:
+    runs-on: ubuntu-latest
+    needs: stub-tests
+    if: always()
+
+    name: Stub Tests
+
+    steps:
+      - name: Check matrix result
+        run: |
+          echo "stub-tests result: ${{ needs.stub-tests.result }}"
+          test "${{ needs.stub-tests.result }}" = "success"
