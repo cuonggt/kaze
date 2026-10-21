@@ -8,6 +8,7 @@
   "devDependencies": {
     "@headlessui/vue": "^1.7.23",
     "@inertiajs/vue3": "^3.9.1",
+    "@lucide/vue": "^1.61.0",
     "@types/node": "^26.6.5",
     "@vitejs/plugin-vue": "^6.0.10",
     "@vueuse/core": "^12.8.2",

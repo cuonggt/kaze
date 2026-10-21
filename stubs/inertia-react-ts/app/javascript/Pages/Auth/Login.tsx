@@ -2,7 +2,7 @@ import { FormEventHandler } from 'react'
 import { Button } from '@/Components/ui/button'
 import { Input } from '@/Components/ui/input'
 import { Label } from '@/Components/ui/label'
-import Checkbox from '@/Components/Checkbox'
+import { Checkbox } from '@/Components/ui/checkbox'
 import GuestLayout from '@/Layouts/GuestLayout'
 import InputError from '@/Components/InputError'
 import { Head, Link, useForm } from '@inertiajs/react'
@@ -66,9 +66,10 @@ export default function Login({ status }: { status?: string }) {
         <div className="block mt-4">
           <label className="flex items-center">
             <Checkbox
+              id="remember"
               name="remember"
               checked={data.remember}
-              onChange={(e) => setData('remember', (e.target.checked || false) as false)}
+              onCheckedChange={(checked) => setData('remember', (checked === true) as false)}
             />
             <span className="ms-2 text-sm text-gray-600 dark:text-gray-400">Remember me</span>
           </label>
