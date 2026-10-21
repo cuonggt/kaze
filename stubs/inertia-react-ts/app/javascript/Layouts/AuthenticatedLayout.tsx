@@ -1,7 +1,9 @@
 import { useState, PropsWithChildren, ReactNode } from 'react'
 import ApplicationLogo from '@/Components/ApplicationLogo'
-import Dropdown from '@/Components/Dropdown'
 import NavLink from '@/Components/NavLink'
+import { Button } from '@/Components/ui/button'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/Components/ui/dropdown-menu'
+import { ChevronDownIcon } from 'lucide-react'
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink'
 import { Link, usePage } from '@inertiajs/react'
 import { dashboard_path, logout_path, profile_edit_path } from '@/routes'
@@ -34,38 +36,26 @@ export default function AuthenticatedLayout({ header, children }: PropsWithChild
 
             <div className="hidden sm:flex sm:items-center sm:ms-6">
               <div className="ms-3 relative">
-                <Dropdown>
-                  <Dropdown.Trigger>
-                    <span className="inline-flex rounded-md">
-                      <button
-                        type="button"
-                        className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-hidden transition ease-in-out duration-150"
-                      >
-                        {user.name}
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" className="text-muted-foreground">
+                      {user.name}
+                      <ChevronDownIcon />
+                    </Button>
+                  </DropdownMenuTrigger>
 
-                        <svg
-                          className="ms-2 -me-0.5 h-4 w-4"
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </button>
-                    </span>
-                  </Dropdown.Trigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem asChild>
+                      <Link href={profile_edit_path()}>Profile</Link>
+                    </DropdownMenuItem>
 
-                  <Dropdown.Content>
-                    <Dropdown.Link href={profile_edit_path()}>Profile</Dropdown.Link>
-                    <Dropdown.Link href={logout_path()} method="post" as="button">
-                      Log Out
-                    </Dropdown.Link>
-                  </Dropdown.Content>
-                </Dropdown>
+                    <DropdownMenuItem asChild>
+                      <Link href={logout_path()} method="post" as="button" className="w-full">
+                        Log Out
+                      </Link>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
             </div>
 
