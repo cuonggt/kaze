@@ -1,0 +1,18 @@
+<%# Applies the stored appearance before first paint, so the page never flashes
+    the wrong theme. Also exposed as window.applyAppearance so the preference
+    control can re-apply it after a change. %>
+<%= javascript_tag nonce: true do %>
+  window.applyAppearance = function () {
+    var preference = localStorage.getItem('appearance') || 'system'
+    var dark = preference === 'dark' ||
+      (preference === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)
+
+    document.documentElement.classList.toggle('dark', dark)
+  }
+
+  window.applyAppearance()
+
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () {
+    window.applyAppearance()
+  })
+<% end %>
