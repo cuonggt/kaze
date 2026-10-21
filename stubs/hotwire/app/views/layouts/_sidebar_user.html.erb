@@ -1,0 +1,32 @@
+<%# The user row at the foot of the sidebar. %>
+<%= render DropdownComponent.new(align: 'left', side: 'top', width: 'w-[15rem]') do |component| %>
+  <% component.with_trigger do %>
+    <button class="flex h-12 w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm hover:bg-sidebar-accent hover:text-sidebar-accent-foreground">
+      <%= render(UserAvatarComponent.new(Current.auth.user.name)) %>
+      <span x-show="sidebarOpen || sidebarOpenMobile" class="grid flex-1 text-left text-sm leading-tight">
+        <span class="truncate font-medium"><%= Current.auth.user.name %></span>
+      </span>
+      <%= render(IconComponent.new('chevrons-up-down', classes: 'ml-auto size-4 shrink-0')) %>
+    </button>
+  <% end %>
+  <div class="px-1 py-1.5">
+    <div class="flex items-center gap-2 text-left text-sm">
+      <%= render(UserAvatarComponent.new(Current.auth.user.name)) %>
+      <div class="grid flex-1 leading-tight">
+        <span class="truncate font-medium"><%= Current.auth.user.name %></span>
+        <span class="truncate text-xs text-muted-foreground"><%= Current.auth.user.email %></span>
+      </div>
+    </div>
+  </div>
+  <div class="-mx-1 my-1 h-px bg-border"></div>
+  <%= render(DropdownLinkComponent.new({ href: profile_edit_path })) do %>
+    Settings
+  <% end %>
+  <div class="-mx-1 my-1 h-px bg-border"></div>
+  <form method="POST" action="<%= logout_path %>">
+    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+    <%= render(DropdownLinkComponent.new({ href: logout_path, onclick: "event.preventDefault();this.closest('form').submit()" })) do %>
+      Log Out
+    <% end %>
+  </form>
+<% end %>

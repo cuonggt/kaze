@@ -1,0 +1,56 @@
+<%# Drawer backdrop. Only ever visible below md, where the sidebar overlays the
+    page rather than sitting beside it. %>
+<div x-show="sidebarOpenMobile"
+  x-transition:enter="transition-opacity ease-linear duration-200"
+  x-transition:enter-start="opacity-0"
+  x-transition:leave="transition-opacity ease-linear duration-200"
+  x-transition:leave-end="opacity-0"
+  x-on:click="sidebarOpenMobile = false"
+  class="fixed inset-0 z-40 bg-black/50 md:hidden"
+  style="display: none;"></div>
+<%# Holds the rail's width in the flow so the page content is never covered.
+    The sidebar itself is fixed, so without this it would overlap. %>
+<div class="hidden shrink-0 transition-[width] duration-200 ease-linear md:block"
+  :class="sidebarOpen ? 'w-64' : 'w-16'"></div>
+<%# One sidebar for both breakpoints: a drawer that slides in below md, a rail
+    that collapses to icons at md and up. %>
+<div class="fixed inset-y-0 left-0 z-50 flex w-72 flex-col gap-2 bg-sidebar p-2 text-sidebar-foreground transition-all duration-200 ease-linear md:z-10 md:translate-x-0"
+  :class="[sidebarOpenMobile ? 'translate-x-0' : '-translate-x-full', sidebarOpen ? 'md:w-64' : 'md:w-16']">
+  <div class="flex flex-col gap-2">
+    <a href="<%= dashboard_path %>" class="flex h-12 items-center gap-2 overflow-hidden rounded-md p-2 text-left hover:bg-sidebar-accent hover:text-sidebar-accent-foreground">
+      <div class="flex aspect-square size-8 shrink-0 items-center justify-center rounded-md bg-sidebar-primary text-sidebar-primary-foreground">
+        <%= render(ApplicationLogoComponent.new({ class: "size-5 fill-current text-white dark:text-black" })) %>
+      </div>
+      <div x-show="sidebarOpen || sidebarOpenMobile" class="ml-1 grid flex-1 text-left text-sm">
+        <span class="mb-0.5 truncate leading-tight font-semibold">Rails</span>
+      </div>
+    </a>
+  </div>
+  <div class="flex min-h-0 flex-1 flex-col gap-2 overflow-auto">
+    <div class="relative flex w-full min-w-0 flex-col p-2">
+      <div x-show="sidebarOpen || sidebarOpenMobile" class="px-2 py-1 text-xs font-medium text-sidebar-foreground/70">Platform</div>
+      <ul class="flex w-full min-w-0 flex-col gap-1">
+        <li>
+          <%= render(SidebarMenuButtonComponent.new(href: dashboard_path, icon: "layout-grid", active: current_page?(dashboard_path))) do %>
+            Dashboard
+          <% end %>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="flex flex-col gap-2">
+    <ul class="flex w-full min-w-0 flex-col gap-1">
+      <li>
+        <%= render(SidebarMenuButtonComponent.new(href: "https://github.com/cuonggt/kaze", icon: "folder-git-2", external: true, class: "text-neutral-600 hover:text-neutral-800 dark:text-neutral-300 dark:hover:text-neutral-100")) do %>
+          Repository
+        <% end %>
+      </li>
+      <li>
+        <%= render(SidebarMenuButtonComponent.new(href: "https://github.com/cuonggt/kaze#readme", icon: "book-open", external: true, class: "text-neutral-600 hover:text-neutral-800 dark:text-neutral-300 dark:hover:text-neutral-100")) do %>
+          Documentation
+        <% end %>
+      </li>
+    </ul>
+    <%= render "layouts/sidebar_user" %>
+  </div>
+</div>

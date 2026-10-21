@@ -9,7 +9,7 @@
     x-transition:leave="transition ease-in duration-75"
     x-transition:leave-start="opacity-100 scale-100"
     x-transition:leave-end="opacity-0 scale-95"
-    class="absolute z-50 mt-2 <%= @width %> rounded-md shadow-lg <%= @alignment_classes %>"
+    class="absolute z-50 <%= @side_classes %> <%= @width %> rounded-md shadow-lg <%= @alignment_classes %>"
     style="display: none;"
     x-on:click="open = false">
     <div class="rounded-md border shadow-md <%= @content_classes %>">
