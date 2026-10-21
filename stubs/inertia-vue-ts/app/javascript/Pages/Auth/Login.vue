@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import Checkbox from '@/Components/Checkbox.vue'
+import { Button } from '@/Components/ui/button'
+import { Input } from '@/Components/ui/input'
+import { Label } from '@/Components/ui/label'
 import GuestLayout from '@/Layouts/GuestLayout.vue'
 import InputError from '@/Components/InputError.vue'
-import InputLabel from '@/Components/InputLabel.vue'
-import PrimaryButton from '@/Components/PrimaryButton.vue'
-import TextInput from '@/Components/TextInput.vue'
 import { Head, Link, useForm } from '@inertiajs/vue3'
 import { login_path, password_request_path } from '@/routes'
 
@@ -37,9 +37,9 @@ const submit = () => {
 
     <form @submit.prevent="submit">
       <div>
-        <InputLabel for="email" value="Email" />
+        <Label for="email">Email</Label>
 
-        <TextInput
+        <Input
           id="email"
           type="email"
           class="mt-1 block w-full"
@@ -53,9 +53,9 @@ const submit = () => {
       </div>
 
       <div class="mt-4">
-        <InputLabel for="password" value="Password" />
+        <Label for="password">Password</Label>
 
-        <TextInput
+        <Input
           id="password"
           type="password"
           class="mt-1 block w-full"
@@ -82,9 +82,7 @@ const submit = () => {
           Forgot your password?
         </Link>
 
-        <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-          Log in
-        </PrimaryButton>
+        <Button class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing"> Log in </Button>
       </div>
     </form>
   </GuestLayout>

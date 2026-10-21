@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import GuestLayout from '@/Layouts/GuestLayout.vue'
+import { Button } from '@/Components/ui/button'
+import { Input } from '@/Components/ui/input'
+import { Label } from '@/Components/ui/label'
 import InputError from '@/Components/InputError.vue'
-import InputLabel from '@/Components/InputLabel.vue'
-import PrimaryButton from '@/Components/PrimaryButton.vue'
-import TextInput from '@/Components/TextInput.vue'
 import { Head, Link, useForm } from '@inertiajs/vue3'
 import { login_path, register_path } from '@/routes'
 
@@ -29,9 +29,9 @@ const submit = () => {
 
     <form @submit.prevent="submit">
       <div>
-        <InputLabel for="name" value="Name" />
+        <Label for="name">Name</Label>
 
-        <TextInput
+        <Input
           id="name"
           type="text"
           class="mt-1 block w-full"
@@ -45,9 +45,9 @@ const submit = () => {
       </div>
 
       <div class="mt-4">
-        <InputLabel for="email" value="Email" />
+        <Label for="email">Email</Label>
 
-        <TextInput
+        <Input
           id="email"
           type="email"
           class="mt-1 block w-full"
@@ -60,9 +60,9 @@ const submit = () => {
       </div>
 
       <div class="mt-4">
-        <InputLabel for="password" value="Password" />
+        <Label for="password">Password</Label>
 
-        <TextInput
+        <Input
           id="password"
           type="password"
           class="mt-1 block w-full"
@@ -75,9 +75,9 @@ const submit = () => {
       </div>
 
       <div class="mt-4">
-        <InputLabel for="password_confirmation" value="Confirm Password" />
+        <Label for="password_confirmation">Confirm Password</Label>
 
-        <TextInput
+        <Input
           id="password_confirmation"
           type="password"
           class="mt-1 block w-full"
@@ -97,9 +97,7 @@ const submit = () => {
           Already registered?
         </Link>
 
-        <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-          Register
-        </PrimaryButton>
+        <Button class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing"> Register </Button>
       </div>
     </form>
   </GuestLayout>
