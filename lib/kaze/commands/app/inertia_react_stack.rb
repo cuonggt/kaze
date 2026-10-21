@@ -54,6 +54,8 @@ class Kaze::Commands::App::InertiaReactStack < Kaze::Commands::App::BaseStack
     ensure_directory_exists("#{Dir.pwd}/app/assets/tailwind")
     FileUtils.copy_file("#{stubs_path}/inertia-react-ts/app/assets/tailwind/application.css", "#{Dir.pwd}/app/assets/tailwind/application.css")
     FileUtils.copy_file("#{stubs_path}/inertia-common/config/vite.json", "#{Dir.pwd}/config/vite.json")
+    ensure_directory_exists("#{Dir.pwd}/config/initializers")
+    FileUtils.copy_file("#{stubs_path}/inertia-common/config/initializers/inertia_rails.rb", "#{Dir.pwd}/config/initializers/inertia_rails.rb")
     FileUtils.copy_file("#{stubs_path}/inertia-react-ts/tsconfig.json", "#{Dir.pwd}/tsconfig.json")
     FileUtils.copy_file("#{stubs_path}/inertia-react-ts/vite.config.ts", "#{Dir.pwd}/vite.config.ts")
     FileUtils.copy_file("#{stubs_path}/default/bin/dev", "#{Dir.pwd}/bin/dev")
