@@ -6,10 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
-Nothing user facing. Development and CI only.
+## [1.2.1] - 2026-10-21
+
+No changes to scaffolding behaviour. Packaging, documentation and CI only.
+
+### Added
+
+- This changelog. It ships in the gem and is linked from the RubyGems page through `changelog_uri`
 
 ### Changed
 
+- `homepage` and the README point at `github.com/cuonggt/kaze`, the current repository URL, rather than the `gtkvn` name that redirects to it
 - Updated development dependencies, clearing 62 Dependabot advisories against `Gemfile.lock`. The lockfile is not shipped in the gem, so this affects contributors and CI only ([#16](https://github.com/cuonggt/kaze/pull/16))
 - CI reports a single stable `Stub Tests` check alongside the per-stack jobs, so branch protection no longer depends on job names generated from the test matrix ([#18](https://github.com/cuonggt/kaze/pull/18))
 
@@ -64,7 +71,8 @@ Together these take a freshly scaffolded Inertia application from seven npm advi
 
 Releases before 1.0.0 are not catalogued here. See the [tags](https://github.com/cuonggt/kaze/tags) for their history.
 
-[Unreleased]: https://github.com/cuonggt/kaze/compare/v1.2.0...HEAD
+[Unreleased]: https://github.com/cuonggt/kaze/compare/v1.2.1...HEAD
+[1.2.1]: https://github.com/cuonggt/kaze/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/cuonggt/kaze/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/cuonggt/kaze/compare/v1.0.1...v1.1.0
 [1.0.1]: https://github.com/cuonggt/kaze/compare/v1.0.0...v1.0.1
