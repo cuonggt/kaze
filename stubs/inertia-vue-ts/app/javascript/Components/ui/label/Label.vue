@@ -1,19 +1,11 @@
 <script setup lang="ts">
-import type { Component, HTMLAttributes } from 'vue'
+import type { LabelProps } from 'reka-ui'
+import type { HTMLAttributes } from 'vue'
 import { reactiveOmit } from '@vueuse/core'
 import { Label } from 'reka-ui'
 import { cn } from '@/lib/utils'
 
-// Upstream uses reka-ui's LabelProps; see the note in Button.vue for why the
-// props are spelled out here instead.
-interface Props {
-  for?: string
-  as?: string | Component
-  asChild?: boolean
-  class?: HTMLAttributes['class']
-}
-
-const props = defineProps<Props>()
+const props = defineProps<LabelProps & { class?: HTMLAttributes['class'] }>()
 
 const delegatedProps = reactiveOmit(props, 'class')
 </script>
