@@ -3,7 +3,10 @@ module HandleInertiaRequests
 
   included do
     inertia_share do
-      { auth: { user: Current.auth.get_user } }
+      {
+        auth: { user: Current.auth.get_user },
+        sidebar_open: cookies[:sidebar_state].nil? || cookies[:sidebar_state] == "true"
+      }
     end
   end
 end

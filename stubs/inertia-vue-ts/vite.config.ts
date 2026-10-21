@@ -16,7 +16,16 @@ export default defineConfig({
         // files to resolve those types. It does not assume filesystem access,
         // so hand it one.
         fs: {
-          fileExists: (file: string) => fs.existsSync(file),
+          // statSync, not existsSync: a barrel import like `from "."` probes the
+          // directory itself, and claiming it exists makes the compiler try to
+          // read a directory.
+          fileExists: (file: string) => {
+            try {
+              return fs.statSync(file).isFile()
+            } catch {
+              return false
+            }
+          },
           readFile: (file: string) => fs.readFileSync(file, 'utf-8'),
         },
       },
