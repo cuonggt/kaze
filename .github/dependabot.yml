@@ -1,0 +1,65 @@
+version: 2
+
+updates:
+  # The gem's own development dependencies. Gemfile.lock is not shipped --
+  # spec.files covers lib, stubs, LICENSE.md and README.md only -- so these
+  # updates reach contributors and CI, never anyone running `gem install kaze`.
+  - package-ecosystem: bundler
+    directory: "/"
+    schedule:
+      interval: weekly
+    groups:
+      development-dependencies:
+        patterns:
+          - "*"
+
+  # Prettier, used to format the stub sources.
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: weekly
+    groups:
+      tooling:
+        patterns:
+          - "*"
+
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+    groups:
+      actions:
+        patterns:
+          - "*"
+
+  # The two stub package.json files are what every scaffolded application
+  # receives, so a major here changes the starter kit itself and needs an
+  # install-and-build pass across all three stacks before it can be trusted.
+  # Majors are therefore left out and stay a deliberate piece of work; minor
+  # and patch updates, which is where security fixes land, come through
+  # grouped into a single pull request per stack.
+  - package-ecosystem: npm
+    directory: "/stubs/inertia-react-ts"
+    schedule:
+      interval: weekly
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - version-update:semver-major
+    groups:
+      react-stub:
+        patterns:
+          - "*"
+
+  - package-ecosystem: npm
+    directory: "/stubs/inertia-vue-ts"
+    schedule:
+      interval: weekly
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - version-update:semver-major
+    groups:
+      vue-stub:
+        patterns:
+          - "*"
