@@ -10,7 +10,7 @@ class Kaze::Commands::App::BaseStack
   private
 
   def bundle_command
-    @bundle_command ||= File.exist?("#{Dir.pwd}/bin/bundle") ? "#{Dir.pwd}/bin/bundle" : "bundle"
+    @bundle_command ||= File.exist?("#{Dir.pwd}/bin/bundle") ? "#{Dir.pwd}/bin/bundle" : 'bundle'
   end
 
   def install_gems(gems = [], group = nil)
@@ -84,7 +84,7 @@ class Kaze::Commands::App::BaseStack
   end
 
   def run_commands(commands)
-    commands.each { |command| run_command(command) }
+    commands.all? { |command| run_command(command).success? }
   end
 
   def say(message, color = nil)
