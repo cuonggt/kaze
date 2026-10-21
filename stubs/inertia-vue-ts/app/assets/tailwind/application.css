@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+@plugin "@tailwindcss/forms";
+
+@source "../../../public/*.html";
+@source "../../helpers/**/*.rb";
+@source "../../views/**/*";
+@source "../../javascript/**/*.vue";
+
+@theme {
+  --font-sans: Inter, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+/* Tailwind v4 Preflight resets buttons to `cursor: default`; keep the v3 behaviour. */
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
