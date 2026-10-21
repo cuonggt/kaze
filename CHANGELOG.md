@@ -6,6 +6,37 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-10-21
+
+### Changed
+
+- Both Inertia stacks move to Inertia.js 3 ([#25](https://github.com/cuonggt/kaze/pull/25)). The versions are chained rather than independent: Inertia 3's React adapter requires React 19, and `@vitejs/plugin-react` 6 requires Vite 8, so the whole front end moves together.
+
+  | package | from | to |
+  |---|---|---|
+  | @inertiajs/react, @inertiajs/vue3 | ^2.0.0 | ^3.9.1 |
+  | react, react-dom | ^18.2.0 | ^19.3.1 |
+  | @vitejs/plugin-react | ^4.2.0 | ^6.1.2 |
+  | @vitejs/plugin-vue | ^5.0.5 | ^6.0.10 |
+  | typescript | ^5.6.3 | ^7.0.2 |
+  | vite | ^6.4.4 | ^8.3.4 |
+  | @types/node | ^18.13.0 | ^26.6.5 |
+  | vue | ^3.4.27 | ^3.5.44 |
+  | vue-tsc | ^2.0.21 | ^3.3.13 |
+  | vite-plugin-rails | ^0.5.0 | ^0.6.0 |
+
+- The React entrypoint resolves pages differently. Inertia 3 narrowed its resolver type so that a promise of a module object is no longer accepted, and `resolvePageComponent` now unwraps `default` itself and is typed with the exported `ResolvedComponent`.
+
+### Added
+
+- Both Inertia stacks install `config/initializers/inertia_rails.rb`. Inertia 3 reads the initial page from a `<script type="application/json">` element and expects a `data-inertia` head attribute; `inertia_rails` supports both but defaults to the v2 behaviour, so without this the client loads and renders nothing. The initializer also sets `always_include_errors_hash`, which becomes the default in InertiaRails 4.0.
+
+### Internal
+
+- Dependabot watches bundler, npm and GitHub Actions weekly. Majors are held back for the two stub manifests, since a major there changes the starter kit and needs an install-and-build pass across all three stacks ([#20](https://github.com/cuonggt/kaze/pull/20))
+- The nightly schedule lives in its own workflow ([#19](https://github.com/cuonggt/kaze/pull/19)). GitHub disables a workflow carrying a `schedule:` trigger after 60 days without repository activity, and disables its other triggers with it — which is how CI came to be switched off for the twelve months before 1.2.0. An idle stretch can now cost only the nightly run, never pull request CI.
+- `actions/checkout` 4 → 7, prettier 3.3.2 → 3.9.10 ([#21](https://github.com/cuonggt/kaze/pull/21), [#22](https://github.com/cuonggt/kaze/pull/22))
+
 ## [1.2.1] - 2026-10-21
 
 No changes to scaffolding behaviour. Packaging, documentation and CI only.
@@ -71,7 +102,8 @@ Together these take a freshly scaffolded Inertia application from seven npm advi
 
 Releases before 1.0.0 are not catalogued here. See the [tags](https://github.com/cuonggt/kaze/tags) for their history.
 
-[Unreleased]: https://github.com/cuonggt/kaze/compare/v1.2.1...HEAD
+[Unreleased]: https://github.com/cuonggt/kaze/compare/v1.3.0...HEAD
+[1.3.0]: https://github.com/cuonggt/kaze/compare/v1.2.1...v1.3.0
 [1.2.1]: https://github.com/cuonggt/kaze/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/cuonggt/kaze/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/cuonggt/kaze/compare/v1.0.1...v1.1.0
