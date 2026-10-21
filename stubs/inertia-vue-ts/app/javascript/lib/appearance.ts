@@ -10,8 +10,7 @@ export function getAppearance(): Appearance {
 
 export function applyAppearance(appearance: Appearance = getAppearance()): void {
   const dark =
-    appearance === 'dark' ||
-    (appearance === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)
+    appearance === 'dark' || (appearance === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)
 
   document.documentElement.classList.toggle('dark', dark)
 }

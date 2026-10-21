@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import GuestLayout from '@/Layouts/GuestLayout.vue'
+import { Button } from '@/Components/ui/button'
+import { Input } from '@/Components/ui/input'
+import { Label } from '@/Components/ui/label'
 import InputError from '@/Components/InputError.vue'
-import InputLabel from '@/Components/InputLabel.vue'
-import PrimaryButton from '@/Components/PrimaryButton.vue'
-import TextInput from '@/Components/TextInput.vue'
 import { Head, useForm } from '@inertiajs/vue3'
 import { password_store_path } from '@/routes'
 
@@ -32,9 +32,9 @@ const submit = () => {
 
     <form @submit.prevent="submit">
       <div>
-        <InputLabel for="password" value="Password" />
+        <Label for="password">Password</Label>
 
-        <TextInput
+        <Input
           id="password"
           type="password"
           class="mt-1 block w-full"
@@ -48,9 +48,9 @@ const submit = () => {
       </div>
 
       <div class="mt-4">
-        <InputLabel for="password_confirmation" value="Confirm Password" />
+        <Label for="password_confirmation">Confirm Password</Label>
 
-        <TextInput
+        <Input
           id="password_confirmation"
           type="password"
           class="mt-1 block w-full"
@@ -63,9 +63,7 @@ const submit = () => {
       </div>
 
       <div class="flex items-center justify-end mt-4">
-        <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-          Reset Password
-        </PrimaryButton>
+        <Button :class="{ 'opacity-25': form.processing }" :disabled="form.processing"> Reset Password </Button>
       </div>
     </form>
   </GuestLayout>

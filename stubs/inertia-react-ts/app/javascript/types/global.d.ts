@@ -1,6 +1,6 @@
-import { PageProps as InertiaPageProps } from '@inertiajs/core';
+import { PageProps as InertiaPageProps } from '@inertiajs/core'
 import { AxiosInstance } from 'axios'
-import { PageProps as AppPageProps } from './';
+import { PageProps as AppPageProps } from './'
 
 declare global {
   interface Window {

@@ -1,9 +1,9 @@
 import { FormEventHandler } from 'react'
+import { Button } from '@/Components/ui/button'
+import { Input } from '@/Components/ui/input'
+import { Label } from '@/Components/ui/label'
 import GuestLayout from '@/Layouts/GuestLayout'
 import InputError from '@/Components/InputError'
-import InputLabel from '@/Components/InputLabel'
-import PrimaryButton from '@/Components/PrimaryButton'
-import TextInput from '@/Components/TextInput'
 import { Head, useForm } from '@inertiajs/react'
 import { password_store_path } from '@/routes'
 
@@ -28,16 +28,16 @@ export default function ResetPassword({ token }: { token: string }) {
 
       <form onSubmit={submit}>
         <div>
-          <InputLabel htmlFor="password" value="Password" />
+          <Label htmlFor="password">Password</Label>
 
-          <TextInput
+          <Input
             id="password"
             type="password"
             name="password"
             value={data.password}
             className="mt-1 block w-full"
             autoComplete="new-password"
-            isFocused={true}
+            autoFocus
             onChange={(e) => setData('password', e.target.value)}
           />
 
@@ -45,9 +45,9 @@ export default function ResetPassword({ token }: { token: string }) {
         </div>
 
         <div className="mt-4">
-          <InputLabel htmlFor="password_confirmation" value="Confirm Password" />
+          <Label htmlFor="password_confirmation">Confirm Password</Label>
 
-          <TextInput
+          <Input
             type="password"
             name="password_confirmation"
             value={data.password_confirmation}
@@ -60,9 +60,9 @@ export default function ResetPassword({ token }: { token: string }) {
         </div>
 
         <div className="flex items-center justify-end mt-4">
-          <PrimaryButton className="ms-4" disabled={processing}>
+          <Button className="ms-4" disabled={processing}>
             Reset Password
-          </PrimaryButton>
+          </Button>
         </div>
       </form>
     </GuestLayout>

@@ -1,7 +1,7 @@
 class InputErrorComponent < ViewComponent::Base
   erb_template <<~ERB
     <div <%= sanitize @attributes.join(" ") %>>
-      <p class="text-sm text-red-600 dark:text-red-400">
+      <p class="text-sm text-destructive">
         <%= @message %>
       </p>
     </div>

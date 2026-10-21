@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import InputError from '@/Components/InputError.vue'
-import InputLabel from '@/Components/InputLabel.vue'
-import PrimaryButton from '@/Components/PrimaryButton.vue'
-import TextInput from '@/Components/TextInput.vue'
+import { Button } from '@/Components/ui/button'
+import { Input } from '@/Components/ui/input'
+import { Label } from '@/Components/ui/label'
 import { Link, useForm, usePage } from '@inertiajs/vue3'
 import { profile_update_path, verification_send_path } from '@/routes'
 
@@ -31,9 +31,9 @@ const form = useForm({
 
     <form @submit.prevent="form.patch(profile_update_path())" class="mt-6 space-y-6">
       <div>
-        <InputLabel for="name" value="Name" />
+        <Label for="name">Name</Label>
 
-        <TextInput
+        <Input
           id="name"
           type="text"
           class="mt-1 block w-full"
@@ -47,9 +47,9 @@ const form = useForm({
       </div>
 
       <div>
-        <InputLabel for="email" value="Email" />
+        <Label for="email">Email</Label>
 
-        <TextInput
+        <Input
           id="email"
           type="email"
           class="mt-1 block w-full"
@@ -83,7 +83,7 @@ const form = useForm({
       </div>
 
       <div class="flex items-center gap-4">
-        <PrimaryButton :disabled="form.processing">Save</PrimaryButton>
+        <Button :disabled="form.processing">Save</Button>
 
         <Transition
           enter-active-class="transition ease-in-out"
