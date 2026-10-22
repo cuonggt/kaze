@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Documentation
+
+- A README section on the frontend. The 2.0.0 redesign is the largest change this project has had and the README described none of it — what shadcn/ui means here, that the primitives are yours to edit, how to add more with `npx shadcn@latest add`, the capitalised `@/Components` alias that will bite anyone hand-writing an import, the token and appearance systems, and why the Hotwire stack hand-rolls its own equivalents.
+
 ### Internal
 
 - A test suite for the gem itself, run by `rake test` and by a new `Gem Tests` job in CI. Until now the only automated coverage was the scaffolded applications' own tests, which exercise the stubs but never the code that copies them.
