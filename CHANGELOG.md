@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Internal
+
+- A test suite for the gem itself, run by `rake test` and by a new `Gem Tests` job in CI. Until now the only automated coverage was the scaffolded applications' own tests, which exercise the stubs but never the code that copies them.
+
+  The bulk of it covers `kaze upgrade`, since that is the part that deletes files from a real application: that a directory is pruned only once empty, that one still holding someone else's work survives along with the file in it, that nothing above `app/` is ever touched, and that a path missing from the application is skipped rather than raised on. The rest pins the removal manifests — no listed path may still be shipped by the stubs, which would have `upgrade` delete a file the install puts straight back — and checks that `lib/kaze/version.rb` matches the newest changelog heading, so a release cannot ship a version the changelog does not describe.
+
+  The tests are excluded from the built gem.
+
 ## [2.1.0] - 2026-10-22
 
 ### Added
