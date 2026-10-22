@@ -1,10 +1,12 @@
 import { useState } from 'react'
+import { LucideIcon, Monitor, Moon, Sun } from 'lucide-react'
 import { Appearance, getAppearance, setAppearance } from '@/lib/appearance'
+import { cn } from '@/lib/utils'
 
-const options: { value: Appearance; label: string }[] = [
-  { value: 'light', label: 'Light' },
-  { value: 'dark', label: 'Dark' },
-  { value: 'system', label: 'System' },
+const options: { value: Appearance; icon: LucideIcon; label: string }[] = [
+  { value: 'light', icon: Sun, label: 'Light' },
+  { value: 'dark', icon: Moon, label: 'Dark' },
+  { value: 'system', icon: Monitor, label: 'System' },
 ]
 
 export default function UpdateAppearanceForm({ className = '' }: { className?: string }) {
@@ -16,24 +18,24 @@ export default function UpdateAppearanceForm({ className = '' }: { className?: s
   }
 
   return (
-    <section className={className}>
-      <div className="inline-flex rounded-lg bg-gray-100 p-1 dark:bg-gray-900">
-        {options.map((option) => (
-          <button
-            key={option.value}
-            type="button"
-            onClick={() => select(option.value)}
-            aria-pressed={appearance === option.value}
-            className={`rounded-md px-4 py-1.5 text-sm font-medium transition focus:outline-hidden focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 ${
-              appearance === option.value
-                ? 'bg-white text-gray-900 shadow-xs dark:bg-gray-700 dark:text-gray-100'
-                : 'text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100'
-            }`}
-          >
-            {option.label}
-          </button>
-        ))}
-      </div>
-    </section>
+    <div className={cn('inline-flex gap-1 rounded-lg bg-neutral-100 p-1 dark:bg-neutral-800', className)}>
+      {options.map(({ value, icon: Icon, label }) => (
+        <button
+          key={value}
+          type="button"
+          onClick={() => select(value)}
+          aria-pressed={appearance === value}
+          className={cn(
+            'flex items-center rounded-md px-3.5 py-1.5 transition-colors outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50',
+            appearance === value
+              ? 'bg-white shadow-xs dark:bg-neutral-700 dark:text-neutral-100'
+              : 'text-neutral-500 hover:bg-neutral-200/60 hover:text-black dark:text-neutral-400 dark:hover:bg-neutral-700/60',
+          )}
+        >
+          <Icon className="-ml-1 h-4 w-4" />
+          <span className="ml-1.5 text-sm">{label}</span>
+        </button>
+      ))}
+    </div>
   )
 }

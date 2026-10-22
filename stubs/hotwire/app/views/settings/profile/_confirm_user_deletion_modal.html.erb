@@ -1,10 +1,10 @@
 <div id="confirm_user_deletion_modal">
   <%= render(ModalComponent.new({ name: "confirm-user-deletion", show: @delete_user_form.error_messages.has_key?(:password), focusable: true })) do %>
     <%= form_with model: @delete_user_form, url: profile_destroy_path, method: "delete", class: "p-6" do %>
-      <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+      <h2 class="text-lg font-medium text-foreground">
         Are you sure you want to delete your account?
       </h2>
-      <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+      <p class="mt-1 text-sm text-muted-foreground">
         Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.
       </p>
       <div class="mt-6">

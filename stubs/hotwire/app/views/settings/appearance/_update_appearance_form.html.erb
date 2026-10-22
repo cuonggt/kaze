@@ -1,4 +1,6 @@
-<section
+<%# Alpine holds the preference; the buttons themselves are rendered here so the
+    icons come through the same component the rest of the layout uses. %>
+<div
   x-data="{
     preference: localStorage.getItem('appearance') || 'system',
     select(value) {
@@ -7,23 +9,20 @@
       window.applyAppearance()
     }
   }"
+  class="inline-flex gap-1 rounded-lg bg-neutral-100 p-1 dark:bg-neutral-800"
 >
-  <div class="inline-flex rounded-lg bg-gray-100 p-1 dark:bg-gray-900">
-    <template x-for="option in [
-      { value: 'light', label: 'Light' },
-      { value: 'dark', label: 'Dark' },
-      { value: 'system', label: 'System' }
-    ]" :key="option.value">
-      <button
-        type="button"
-        @click="select(option.value)"
-        :aria-pressed="preference === option.value"
-        class="rounded-md px-4 py-1.5 text-sm font-medium transition focus:outline-hidden focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
-        :class="preference === option.value
-          ? 'bg-white text-gray-900 shadow-xs dark:bg-gray-700 dark:text-gray-100'
-          : 'text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100'"
-        x-text="option.label"
-      ></button>
-    </template>
-  </div>
-</section>
+  <% [ [ 'light', 'Light', 'sun' ], [ 'dark', 'Dark', 'moon' ], [ 'system', 'System', 'monitor' ] ].each do |value, label, icon| %>
+    <button
+      type="button"
+      @click="select('<%= value %>')"
+      :aria-pressed="preference === '<%= value %>'"
+      class="flex items-center rounded-md px-3.5 py-1.5 transition-colors outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+      :class="preference === '<%= value %>'
+        ? 'bg-white shadow-xs dark:bg-neutral-700 dark:text-neutral-100'
+        : 'text-neutral-500 hover:bg-neutral-200/60 hover:text-black dark:text-neutral-400 dark:hover:bg-neutral-700/60'"
+    >
+      <%= render(IconComponent.new(icon, classes: '-ml-1 h-4 w-4')) %>
+      <span class="ml-1.5 text-sm"><%= label %></span>
+    </button>
+  <% end %>
+</div>
