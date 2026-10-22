@@ -1,0 +1,10 @@
+<% content_for(:title, 'Password settings') %>
+<% content_for(:breadcrumbs) do %>
+  <%= render(BreadcrumbsComponent.new([ { title: 'Password settings', href: password_edit_path } ])) %>
+<% end %>
+<%= render layout: 'layouts/settings' do %>
+  <div class="space-y-6">
+    <%= render(HeadingComponent.new(title: 'Update password', description: 'Ensure your account is using a long, random password to stay secure', variant: 'small')) %>
+    <%= render 'settings/password/update_password_form' %>
+  </div>
+<% end %>

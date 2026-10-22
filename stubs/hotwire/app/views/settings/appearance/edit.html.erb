@@ -1,0 +1,10 @@
+<% content_for(:title, 'Appearance settings') %>
+<% content_for(:breadcrumbs) do %>
+  <%= render(BreadcrumbsComponent.new([ { title: 'Appearance settings', href: appearance_edit_path } ])) %>
+<% end %>
+<%= render layout: 'layouts/settings' do %>
+  <div class="space-y-6">
+    <%= render(HeadingComponent.new(title: 'Appearance settings', description: 'Update the appearance settings for your account', variant: 'small')) %>
+    <%= render 'settings/appearance/update_appearance_form' %>
+  </div>
+<% end %>
