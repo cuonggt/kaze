@@ -85,5 +85,7 @@ class Kaze::Commands::App::InertiaVueStack < Kaze::Commands::App::BaseStack
 
     say ''
     say 'Kaze scaffolding installed successfully.', :green
+
+    true
   end
 end
