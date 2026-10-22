@@ -1,4 +1,27 @@
 class Kaze::Commands::App::InertiaReactStack < Kaze::Commands::App::BaseStack
+  # Paths that earlier versions of Kaze installed here and this version no longer
+  # ships. `kaze upgrade` offers to delete whichever of them an application still
+  # has; anything removed in a future version belongs on this list too.
+  REMOVED_PATHS = [
+    'app/controllers/profile_controller.rb',
+    'app/controllers/password_controller.rb',
+    'app/javascript/Components/Checkbox.tsx',
+    'app/javascript/Components/DangerButton.tsx',
+    'app/javascript/Components/Dropdown.tsx',
+    'app/javascript/Components/InputLabel.tsx',
+    'app/javascript/Components/Modal.tsx',
+    'app/javascript/Components/NavLink.tsx',
+    'app/javascript/Components/PrimaryButton.tsx',
+    'app/javascript/Components/ResponsiveNavLink.tsx',
+    'app/javascript/Components/SecondaryButton.tsx',
+    'app/javascript/Components/TextInput.tsx',
+    'app/javascript/Pages/Profile/Edit.tsx',
+    'app/javascript/Pages/Profile/Partials/DeleteUserForm.tsx',
+    'app/javascript/Pages/Profile/Partials/UpdateAppearanceForm.tsx',
+    'app/javascript/Pages/Profile/Partials/UpdatePasswordForm.tsx',
+    'app/javascript/Pages/Profile/Partials/UpdateProfileInformationForm.tsx'
+  ].freeze
+
   def install
     # Gems...
     return unless remove_gems([ 'sprockets-rails', 'turbo-rails', 'stimulus-rails' ])
