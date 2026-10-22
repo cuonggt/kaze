@@ -76,6 +76,22 @@ bin/dev
 
 Next, you may navigate to your application's `/login` or `/register` URLs in your web browser. All of Kaze's routes are defined within the `config/routes.rb` file.
 
+## The frontend
+
+Both Inertia stacks are built on [shadcn/ui](https://ui.shadcn.com) — thirteen primitives apiece (button, input, label, checkbox, dialog, dropdown menu, separator, skeleton, sheet, tooltip, avatar, breadcrumb and sidebar), on Radix for React and [reka-ui](https://reka-ui.com) for Vue. shadcn copies source into a project rather than shipping a package, which is how Kaze already works, so these land in `app/javascript/Components/ui` and are yours to change.
+
+A `components.json` comes with them, so you can add more:
+
+```
+npx shadcn@latest add card
+```
+
+One thing to know if you reach for that: Kaze uses a capitalised `@/Components`, which `components.json` already records. The CLI will follow it, but an import you write by hand as `@/components/ui/card` will resolve on macOS and fail on Linux.
+
+Colour runs through design tokens — `bg-background`, `text-muted-foreground`, `border-sidebar-border` and so on, defined once per stylesheet as oklch variables — rather than per-element `dark:` pairs. Appearance is a user preference of light, dark or system, stored in `localStorage` and applied before first paint so the page never flashes the wrong theme; system follows the device and tracks it live. The application layout is a sidebar that collapses to icons and becomes a drawer on small screens, remembering its state in a cookie the server reads back.
+
+There is no shadcn for Hotwire. That stack gets the same look from ViewComponents written against the same tokens, with the handful of [lucide](https://lucide.dev) icons the layouts need inlined into an `IconComponent`, since it carries no npm dependencies at all.
+
 ## Upgrading
 
 Kaze copies files into your application and does not own them afterwards, so re-running `kaze install` cannot know whether a file it no longer ships was left over from an older version or written by you. `kaze upgrade` resolves that by asking:
