@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [2.0.1] - 2026-10-22
+
 ### Fixed
 
 - `kaze install` run through `bundle exec` no longer fails to build gems with native extensions. Bundler exports `RUBYOPT` and `BUNDLE_*` so child processes join its bundle, which is wrong for a nested bundler call: the `bundle add` that kaze shells out to inherited them, and `extconf.rb` then loaded `bundler/setup` and tried to resolve a lockfile needing the very gem it was about to compile, failing with `Could not find bcrypt-… in locally installed gems`. The bundler shell-outs now run inside `Bundler.with_unbundled_env`.
@@ -183,7 +185,8 @@ Together these take a freshly scaffolded Inertia application from seven npm advi
 
 Releases before 1.0.0 are not catalogued here. See the [tags](https://github.com/cuonggt/kaze/tags) for their history.
 
-[Unreleased]: https://github.com/cuonggt/kaze/compare/v2.0.0...HEAD
+[Unreleased]: https://github.com/cuonggt/kaze/compare/v2.0.1...HEAD
+[2.0.1]: https://github.com/cuonggt/kaze/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/cuonggt/kaze/compare/v1.4.0...v2.0.0
 [1.4.0]: https://github.com/cuonggt/kaze/compare/v1.3.1...v1.4.0
 [1.3.1]: https://github.com/cuonggt/kaze/compare/v1.3.0...v1.3.1
