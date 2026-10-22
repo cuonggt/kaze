@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [2.1.0] - 2026-10-22
+
 ### Added
 
 - A `kaze upgrade [STACK]` command. Kaze copies files into an application and does not own them afterwards, so `kaze install` cannot tell a leftover from an older version apart from something you wrote, and has always left both alone. `upgrade` resolves that by asking instead of guessing: it lists the files an earlier Kaze installed that this version no longer ships, waits for you to agree, removes them, and then runs the normal install.
@@ -193,7 +195,8 @@ Together these take a freshly scaffolded Inertia application from seven npm advi
 
 Releases before 1.0.0 are not catalogued here. See the [tags](https://github.com/cuonggt/kaze/tags) for their history.
 
-[Unreleased]: https://github.com/cuonggt/kaze/compare/v2.0.1...HEAD
+[Unreleased]: https://github.com/cuonggt/kaze/compare/v2.1.0...HEAD
+[2.1.0]: https://github.com/cuonggt/kaze/compare/v2.0.1...v2.1.0
 [2.0.1]: https://github.com/cuonggt/kaze/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/cuonggt/kaze/compare/v1.4.0...v2.0.0
 [1.4.0]: https://github.com/cuonggt/kaze/compare/v1.3.1...v1.4.0
