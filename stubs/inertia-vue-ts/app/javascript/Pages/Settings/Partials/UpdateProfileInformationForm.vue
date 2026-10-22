@@ -54,13 +54,13 @@ const form = useForm({
       </div>
 
       <div v-if="mustVerifyEmail && user.email_verified_at === null">
-        <p class="text-sm mt-2 text-gray-800 dark:text-gray-200">
+        <p class="mt-2 text-sm text-foreground">
           Your email address is unverified.
           <Link
             :href="verification_send_path()"
             method="post"
             as="button"
-            class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
+            class="rounded-md text-sm text-muted-foreground underline outline-none hover:text-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50"
           >
             Click here to re-send the verification email.
           </Link>
@@ -83,7 +83,7 @@ const form = useForm({
           leave-active-class="transition ease-in-out"
           leave-to-class="opacity-0"
         >
-          <p v-if="form.recentlySuccessful" class="text-sm text-gray-600 dark:text-gray-400">Saved.</p>
+          <p v-if="form.recentlySuccessful" class="text-sm text-muted-foreground">Saved.</p>
         </Transition>
       </div>
     </form>
