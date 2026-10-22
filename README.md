@@ -4,7 +4,7 @@
 
 Heavily inspired by [Laravel Breeze](https://github.com/laravel/breeze), this gem offers authentication and application starter kits to give you a head start building your new [Rails](https://rubyonrails.org) application. These kits automatically scaffold your application with the routes, controllers, and views you need to register and authenticate your application's users.
 
-[Kaze](https://github.com/cuonggt/kaze) is a opinionated minimal, simple implementation of all authentication features that a modern web application should have, including login, registration, password reset, email verification. In addition, Kaze includes a settings area where the user may update their name and email address, change their password, choose an appearance, and delete their account.
+[Kaze](https://github.com/cuonggt/kaze) is an opinionated, minimal, simple implementation of all authentication features that a modern web application should have, including login, registration, password reset, and email verification. In addition, Kaze includes a settings area where the user may update their name and email address, change their password, choose an appearance, and delete their account.
 
 Kaze provides scaffolding options based on [Hotwire](https://hotwired.dev) or [Inertia](https://inertiajs.com), with the choice of using Vue or React for the Inertia-based scaffolding.
 
@@ -36,7 +36,7 @@ Once the project has been created, you may scaffold your application using one o
 
 ## Kaze and Hotwire
 
-The default Kaze "stack" is the Hotwire stack. Hotwire is a powerful way to building dynamic, reactive, front-end UIs primarily using Ruby and ERB templates without using much JavaScript by sending HTML instead of JSON over the wire.
+The default Kaze "stack" is the Hotwire stack. Hotwire is a powerful way to build dynamic, reactive, front-end UIs primarily using Ruby and ERB templates without using much JavaScript by sending HTML instead of JSON over the wire.
 
 The Hotwire stack may be installed by invoking the `kaze install` command with no other additional arguments inside your app directory. This command publishes the authentication, views, routes, controllers, and other resources to your application.
 
