@@ -6,6 +6,39 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Added
+
+- The frontend is rebuilt on [shadcn/ui](https://ui.shadcn.com), following Laravel's [react](https://github.com/laravel/react-starter-kit) and [vue](https://github.com/laravel/vue-starter-kit) starter kits ([#27](https://github.com/cuonggt/kaze/pull/27), [#28](https://github.com/cuonggt/kaze/pull/28), [#29](https://github.com/cuonggt/kaze/pull/29), [#30](https://github.com/cuonggt/kaze/pull/30), [#31](https://github.com/cuonggt/kaze/pull/31), [#32](https://github.com/cuonggt/kaze/pull/32), [#33](https://github.com/cuonggt/kaze/pull/33), [#34](https://github.com/cuonggt/kaze/pull/34)). shadcn copies source into the project rather than shipping a package, which is how Kaze already works, so the primitives are vendored into `Components/ui` and are yours to edit.
+
+  A design token layer comes with it. Colour is now `bg-background`, `text-muted-foreground`, `border-sidebar-border` and so on, resolving through oklch variables defined once per stylesheet, instead of `bg-white dark:bg-gray-800` repeated per element. A `components.json` records the aliases so `npx shadcn@latest add <component>` lands in the right place — note that Kaze uses a capitalised `@/Components`, which that file already reflects.
+
+  Thirteen primitives for each Inertia stack: button, input, label, checkbox, dialog, dropdown-menu, separator, skeleton, sheet, tooltip, avatar, breadcrumb and sidebar, plus a `cn` helper in `lib/utils`. React builds on Radix, Vue on reka-ui.
+
+- A collapsible sidebar replaces the top navigation bar in all three stacks. It collapses to icons, becomes a drawer below `md`, and remembers its state in a `sidebar_state` cookie that the server reads back, so the first paint matches the last choice rather than flashing open.
+
+  There is no shadcn for Hotwire, so its sidebar is hand-rolled in Alpine and ERB against the same tokens, with the lucide icons inlined through a new `IconComponent` since Hotwire has no npm.
+
+- A settings area at `/settings/profile`, `/settings/password` and `/settings/appearance`, replacing the single profile page ([#35](https://github.com/cuonggt/kaze/pull/35), [#36](https://github.com/cuonggt/kaze/pull/36)). `/settings` redirects to the profile page. Each has its own breadcrumb and page title, and the delete-account form stays on the profile page.
+
+### Changed
+
+- **The profile page has moved and its routes with it.** `/profile` is now `/settings/profile`, and password updates post to `/settings/password` rather than to the profile page. The route helper names are unchanged — `profile_edit_path` still exists, it just points somewhere new — so an application that uses the helpers rather than hard-coded paths needs no edit. `password_edit_path` and `appearance_edit_path` are new. `ProfileController` and `PasswordController` become `Settings::ProfileController`, `Settings::PasswordController` and `Settings::AppearanceController`.
+
+- The `dark` variant is redefined, in all three stylesheets:
+
+  ```css
+  /* was */ @custom-variant dark (&:where(.dark, .dark *));
+  /* now */ @custom-variant dark (&:is(.dark *));
+  ```
+
+  `:where()` contributes no specificity, so a `dark:` utility tied with its light counterpart and won or lost on the order Tailwind happened to emit them in — `dark:text-black` lost to `text-white` on the same element. `:is()` gives the variant the higher specificity, which is what Laravel's kits use. If you have written a `dark:` override that was silently losing, it will now apply; if you wrote one that depended on losing, it will not.
+
+- The Vue stack pins `typescript` to `^5.9.3`, down from `^7.0.2` ([#30](https://github.com/cuonggt/kaze/pull/30)). `@vue/compiler-sfc` needs filesystem access to resolve prop types that cross a package boundary, which the vendored primitives do, and the resolver it uses is not compatible with TypeScript 7. The React stack stays on 7.
+
+### Removed
+
+- The hand-rolled components the shadcn primitives replace: `PrimaryButton`, `SecondaryButton`, `DangerButton`, `TextInput`, `InputLabel`, `Checkbox`, `Modal`, `Dropdown`, `NavLink` and `ResponsiveNavLink` from both Inertia stacks, `DropdownLink` from the Vue stack, and `NavLinkComponent` and `ResponsiveNavLinkComponent` from Hotwire. The buttons, inputs and labels map onto `Button`, `Input` and `Label` with a variant; the navigation links have no successor, because the sidebar replaced what used them.
+
 ## [1.4.0] - 2026-10-21
 
 ### Added
