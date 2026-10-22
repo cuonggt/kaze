@@ -1,0 +1,49 @@
+<%= turbo_frame_tag 'update_profile_information_form' do %>
+  <section>
+      <form id="send-verification" method="post" action="<%= verification_send_path %>">
+      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+    </form>
+    <%= form_with model: @update_profile_information_form, url: profile_update_path, method: "patch", class: "mt-6 space-y-6" do %>
+      <!-- Name -->
+      <div>
+        <%= render(InputLabelComponent.new({ for: "name", value: "Name" })) %>
+        <%= render(TextInputComponent.new({ id: "name", class: "block mt-1 w-full", type: "text", name: "name", value: @update_profile_information_form.name, required: true, autofocus: true, autocomplete: "name" })) %>
+        <%= render(InputErrorComponent.new({ class: "mt-2", message: @update_profile_information_form.error_messages[:name] })) %>
+      </div>
+      <!-- Email Address -->
+      <div class="mt-4">
+        <%= render(InputLabelComponent.new({ for: "email", value: "Email" })) %>
+        <%= render(TextInputComponent.new({ id: "email", class: "block mt-1 w-full", type: "email", name: "email", value: @update_profile_information_form.email, required: true, autocomplete: "username" })) %>
+        <%= render(InputErrorComponent.new({ class: "mt-2", message: @update_profile_information_form.error_messages[:email] })) %>
+        <% if User.include?(MustVerifyEmail) && !Current.auth.user.has_verified_email? %>
+          <div>
+            <p class="text-sm mt-2 text-gray-800 dark:text-gray-200">
+              Your email address is unverified.
+              <button form="send-verification" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">
+                Click here to re-send the verification email.
+              </button>
+            </p>
+            <% if flash[:status] == 'verification-link-sent' %>
+              <p class="mt-2 font-medium text-sm text-green-600 dark:text-green-400">
+                A new verification link has been sent to your email address.
+              </p>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+      <div class="flex items-center gap-4">
+        <%= render(PrimaryButtonComponent.new) do %>
+          Save
+        <% end %>
+        <% if flash[:status] == "profile-updated" %>
+          <p
+            x-data="{ show: true }"
+            x-show="show"
+            x-transition
+            x-init="setTimeout(() => show = false, 2000)"
+            class="text-sm text-gray-600 dark:text-gray-400">Saved.</p>
+        <% end %>
+      </div>
+    <% end %>
+  </section>
+<% end %>

@@ -23,9 +23,16 @@ Rails.application.routes.draw do
 
   get 'dashboard', to: 'dashboard#index', as: :dashboard
 
-  get 'profile', to: 'profile#edit', as: :profile_edit
-  patch 'profile', to: 'profile#update', as: :profile_update
-  delete 'profile', to: 'profile#destroy', as: :profile_destroy
+  get 'settings', to: redirect('/settings/profile')
 
-  put 'password', to: 'password#update', as: :password_update
+  scope 'settings', module: 'settings' do
+    get 'profile', to: 'profile#edit', as: :profile_edit
+    patch 'profile', to: 'profile#update', as: :profile_update
+    delete 'profile', to: 'profile#destroy', as: :profile_destroy
+
+    get 'password', to: 'password#edit', as: :password_edit
+    put 'password', to: 'password#update', as: :password_update
+
+    get 'appearance', to: 'appearance#edit', as: :appearance_edit
+  end
 end

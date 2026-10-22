@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title><%= content_for(:title) || "Rails" %></title>
+    <title><%= content_for?(:title) ? "#{content_for(:title)} - Rails" : "Rails" %></title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag "tailwind", "data-turbo-track": Rails.env.production? ? "reload" : "" %>

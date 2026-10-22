@@ -1,0 +1,14 @@
+<% content_for(:title, 'Profile settings') %>
+<% content_for(:breadcrumbs) do %>
+  <%= render(BreadcrumbsComponent.new([ { title: 'Profile settings', href: profile_edit_path } ])) %>
+<% end %>
+<%= render layout: 'layouts/settings' do %>
+  <div class="space-y-6">
+    <%= render(HeadingComponent.new(title: 'Profile information', description: 'Update your name and email address', variant: 'small')) %>
+    <%= render 'settings/profile/update_profile_information_form' %>
+  </div>
+  <div class="space-y-6">
+    <%= render(HeadingComponent.new(title: 'Delete account', description: 'Delete your account and all of its resources', variant: 'small')) %>
+    <%= render 'settings/profile/delete_user_form' %>
+  </div>
+<% end %>
