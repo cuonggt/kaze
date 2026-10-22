@@ -39,6 +39,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - The hand-rolled components the shadcn primitives replace: `PrimaryButton`, `SecondaryButton`, `DangerButton`, `TextInput`, `InputLabel`, `Checkbox`, `Modal`, `Dropdown`, `NavLink` and `ResponsiveNavLink` from both Inertia stacks, `DropdownLink` from the Vue stack, and `NavLinkComponent` and `ResponsiveNavLinkComponent` from Hotwire. The buttons, inputs and labels map onto `Button`, `Input` and `Label` with a variant; the navigation links have no successor, because the sidebar replaced what used them.
 
+### Fixed
+
+- `kaze install` exits non-zero when it fails. Every step is guarded, so the installer already stopped at the first failure and withheld its success message — but the process still exited 0, so a script or CI job saw a green step over a half-installed application. This is the same class of silent failure as [#11](https://github.com/cuonggt/kaze/issues/11), in the exit code rather than the output. Anything that runs `kaze install` unattended and currently passes over a failure will now fail, which is the point.
+
+### Upgrading
+
+Kaze scaffolds rather than vendors, so nothing changes under an existing application on its own. Re-running `kaze install` over one built with 1.4.0 or earlier does **not** remove what this release replaced — the installer copies files in and never deletes, deliberately, since by then they are yours and may be edited. The replaced files are left behind for you to delete:
+
+| stack | left behind |
+|---|---|
+| all | `app/controllers/profile_controller.rb`, `app/controllers/password_controller.rb` |
+| react, vue | `app/javascript/Components/{PrimaryButton,SecondaryButton,DangerButton,TextInput,InputLabel,Checkbox,Modal,Dropdown,NavLink,ResponsiveNavLink}`, `DropdownLink` on vue, and the whole of `app/javascript/Pages/Profile/` |
+| hotwire | `app/components/{nav_link,responsive_nav_link}_component.rb`, `app/views/layouts/_navigation.html.erb`, and the whole of `app/views/profile/` |
+
+On the React stack this is not optional: `tsc` typechecks every file under `app/javascript`, and the stale `Pages/Profile/Edit.tsx` still passes a `header` prop that the layout no longer takes, so the build fails until that directory is gone. Vue and Hotwire build and run with the stale files in place — they are dead weight rather than a break, since nothing routes to them any more.
+
 ## [1.4.0] - 2026-10-21
 
 ### Added

@@ -60,5 +60,7 @@ class Kaze::Commands::App::HotwireStack < Kaze::Commands::App::BaseStack
 
     say ''
     say 'Kaze scaffolding installed successfully.', :green
+
+    true
   end
 end
