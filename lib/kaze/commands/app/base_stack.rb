@@ -13,6 +13,16 @@ class Kaze::Commands::App::BaseStack
     @bundle_command ||= File.exist?("#{Dir.pwd}/bin/bundle") ? "#{Dir.pwd}/bin/bundle" : 'bundle'
   end
 
+  # Bundler exports RUBYOPT and BUNDLE_* so that child processes join its
+  # bundle. That is wrong for a nested bundler call: when kaze itself is run
+  # through `bundle exec`, a `bundle add` it shells out to inherits them, and
+  # any gem with a native extension fails to build, because extconf.rb loads
+  # bundler/setup and tries to resolve a lockfile needing the very gem it is
+  # about to compile. Shell out to bundler with that environment removed.
+  def run_bundle_command(command)
+    Bundler.with_unbundled_env { run_command(command) }
+  end
+
   def install_gems(gems = [], group = nil)
     installed_gems = Bundler::Definition.build("#{Dir.pwd}/Gemfile", nil, {}).dependencies.map(&:name)
 
@@ -20,7 +30,7 @@ class Kaze::Commands::App::BaseStack
 
     return true if gem_being_installed.empty?
 
-    status = run_command("#{bundle_command} add #{gem_being_installed.join(" ")}#{group ? " --group \"#{group}\"" : ""}")
+    status = run_bundle_command("#{bundle_command} add #{gem_being_installed.join(" ")}#{group ? " --group \"#{group}\"" : ""}")
 
     status.success?
   end
@@ -32,7 +42,7 @@ class Kaze::Commands::App::BaseStack
 
     return true if gems_being_removed.empty?
 
-    status = run_command("#{bundle_command} remove #{gems_being_removed.join(" ")}")
+    status = run_bundle_command("#{bundle_command} remove #{gems_being_removed.join(" ")}")
 
     status.success?
   end

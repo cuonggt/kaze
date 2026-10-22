@@ -3,7 +3,7 @@ class Kaze::Commands::App::InertiaReactStack < Kaze::Commands::App::BaseStack
     # Gems...
     return unless remove_gems([ 'sprockets-rails', 'turbo-rails', 'stimulus-rails' ])
     return unless install_gems([ 'propshaft', 'inertia_rails', 'vite_rails', 'dotenv', 'bcrypt', 'js-routes' ])
-    return unless run_command("#{bundle_command} add tailwindcss-rails --version=\"~> 4.0\"").success?
+    return unless run_bundle_command("#{bundle_command} add tailwindcss-rails --version=\"~> 4.0\"").success?
     return unless install_gems([ 'factory_bot_rails', 'faker' ], 'development, test')
 
     # NPM Packages...
