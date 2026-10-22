@@ -7,7 +7,32 @@ class Kaze::Commands::App::BaseStack
     raise NotImplementedError
   end
 
+  # Paths from this stack's REMOVED_PATHS that the application still has. Only
+  # ever a subset of that list: `kaze upgrade` never touches a path Kaze did not
+  # put there itself.
+  def removable_paths
+    self.class::REMOVED_PATHS.select { |path| File.exist?("#{Dir.pwd}/#{path}") }
+  end
+
+  def remove_paths(paths)
+    paths.each { |path| FileUtils.rm_f("#{Dir.pwd}/#{path}") }
+
+    prune_empty_directories(paths)
+  end
+
   private
+
+  # Deleting the last file in a directory leaves the directory behind. Walk back
+  # up from each one removing those that are now empty, and stop at the first
+  # that is not -- a directory with anything left in it is the application's.
+  def prune_empty_directories(paths)
+    paths.map { |path| File.dirname("#{Dir.pwd}/#{path}") }.uniq.sort_by(&:length).reverse.each do |dir|
+      while dir.start_with?("#{Dir.pwd}/app/") && Dir.exist?(dir) && Dir.empty?(dir)
+        Dir.rmdir(dir)
+        dir = File.dirname(dir)
+      end
+    end
+  end
 
   def bundle_command
     @bundle_command ||= File.exist?("#{Dir.pwd}/bin/bundle") ? "#{Dir.pwd}/bin/bundle" : 'bundle'

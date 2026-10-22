@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Added
+
+- A `kaze upgrade [STACK]` command. Kaze copies files into an application and does not own them afterwards, so `kaze install` cannot tell a leftover from an older version apart from something you wrote, and has always left both alone. `upgrade` resolves that by asking instead of guessing: it lists the files an earlier Kaze installed that this version no longer ships, waits for you to agree, removes them, and then runs the normal install.
+
+  Only paths Kaze itself shipped are ever offered — the list per stack is fixed in the source, so nothing you added alongside them can be caught by it, and a directory is removed only once it is empty. `--dry-run` prints the list and stops; `--force` skips the prompt for scripts. Declining exits non-zero and changes nothing.
+
+  This replaces the manual file list in the 2.0.0 upgrade notes below. On the React stack it is the difference between an upgraded application building and not: `tsc` typechecks every file under `app/javascript`, so the old `Pages/Profile/Edit.tsx` fails the build until it is gone.
+
 ## [2.0.1] - 2026-10-22
 
 ### Fixed

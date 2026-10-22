@@ -1,4 +1,28 @@
 class Kaze::Commands::App::InertiaVueStack < Kaze::Commands::App::BaseStack
+  # Paths that earlier versions of Kaze installed here and this version no longer
+  # ships. `kaze upgrade` offers to delete whichever of them an application still
+  # has; anything removed in a future version belongs on this list too.
+  REMOVED_PATHS = [
+    'app/controllers/profile_controller.rb',
+    'app/controllers/password_controller.rb',
+    'app/javascript/Components/Checkbox.vue',
+    'app/javascript/Components/DangerButton.vue',
+    'app/javascript/Components/Dropdown.vue',
+    'app/javascript/Components/DropdownLink.vue',
+    'app/javascript/Components/InputLabel.vue',
+    'app/javascript/Components/Modal.vue',
+    'app/javascript/Components/NavLink.vue',
+    'app/javascript/Components/PrimaryButton.vue',
+    'app/javascript/Components/ResponsiveNavLink.vue',
+    'app/javascript/Components/SecondaryButton.vue',
+    'app/javascript/Components/TextInput.vue',
+    'app/javascript/Pages/Profile/Edit.vue',
+    'app/javascript/Pages/Profile/Partials/DeleteUserForm.vue',
+    'app/javascript/Pages/Profile/Partials/UpdateAppearanceForm.vue',
+    'app/javascript/Pages/Profile/Partials/UpdatePasswordForm.vue',
+    'app/javascript/Pages/Profile/Partials/UpdateProfileInformationForm.vue'
+  ].freeze
+
   def install
     # Gems...
     return unless remove_gems([ 'sprockets-rails', 'turbo-rails', 'stimulus-rails' ])

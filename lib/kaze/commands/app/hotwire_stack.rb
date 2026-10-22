@@ -1,4 +1,22 @@
 class Kaze::Commands::App::HotwireStack < Kaze::Commands::App::BaseStack
+  # Paths that earlier versions of Kaze installed here and this version no longer
+  # ships. `kaze upgrade` offers to delete whichever of them an application still
+  # has; anything removed in a future version belongs on this list too.
+  REMOVED_PATHS = [
+    'app/controllers/profile_controller.rb',
+    'app/controllers/password_controller.rb',
+    'app/components/nav_link_component.rb',
+    'app/components/responsive_nav_link_component.rb',
+    'app/views/layouts/_navigation.html.erb',
+    'app/views/profile/destroy.turbo_stream.erb',
+    'app/views/profile/edit.html.erb',
+    'app/views/profile/partials/_confirm_user_deletion_modal.html.erb',
+    'app/views/profile/partials/_delete_user_form.html.erb',
+    'app/views/profile/partials/_update_appearance_form.html.erb',
+    'app/views/profile/partials/_update_password_form.html.erb',
+    'app/views/profile/partials/_update_profile_information_form.html.erb'
+  ].freeze
+
   def install
     # Gems...
     return unless remove_gems([ 'sprockets-rails', 'stimulus-rails' ])

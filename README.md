@@ -75,3 +75,15 @@ bin/dev
 ```
 
 Next, you may navigate to your application's `/login` or `/register` URLs in your web browser. All of Kaze's routes are defined within the `config/routes.rb` file.
+
+## Upgrading
+
+Kaze copies files into your application and does not own them afterwards, so re-running `kaze install` cannot know whether a file it no longer ships was left over from an older version or written by you. `kaze upgrade` resolves that by asking:
+
+```
+kaze upgrade react
+```
+
+It lists the files an earlier Kaze installed that this version no longer ships, waits for you to agree, removes them, and then runs the normal install. Only files Kaze itself shipped are ever listed — anything you added alongside them is untouched, and a directory is removed only once it is empty. Pass `--dry-run` to see the list and stop, or `--force` to skip the prompt in a script.
+
+Upgrading from 1.x to 2.x matters on the React stack in particular: `tsc` typechecks every file under `app/javascript`, so the old `Pages/Profile/Edit.tsx` fails the build until it is gone.
