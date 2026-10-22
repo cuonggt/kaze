@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Fixed
+
+- `kaze install` run through `bundle exec` no longer fails to build gems with native extensions. Bundler exports `RUBYOPT` and `BUNDLE_*` so child processes join its bundle, which is wrong for a nested bundler call: the `bundle add` that kaze shells out to inherited them, and `extconf.rb` then loaded `bundler/setup` and tried to resolve a lockfile needing the very gem it was about to compile, failing with `Could not find bcrypt-… in locally installed gems`. The bundler shell-outs now run inside `Bundler.with_unbundled_env`.
+
+  The README's own instructions — `gem install kaze` then `kaze install` — were never affected, because that runs outside bundler. This reached `bundle exec kaze install`, which is how kaze's CI invokes it and how anyone who adds kaze to their Gemfile would.
+
 ## [2.0.0] - 2026-10-22
 
 ### Added
