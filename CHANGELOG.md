@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [2.0.0] - 2026-10-22
+
 ### Added
 
 - The frontend is rebuilt on [shadcn/ui](https://ui.shadcn.com), following Laravel's [react](https://github.com/laravel/react-starter-kit) and [vue](https://github.com/laravel/vue-starter-kit) starter kits ([#27](https://github.com/cuonggt/kaze/pull/27), [#28](https://github.com/cuonggt/kaze/pull/28), [#29](https://github.com/cuonggt/kaze/pull/29), [#30](https://github.com/cuonggt/kaze/pull/30), [#31](https://github.com/cuonggt/kaze/pull/31), [#32](https://github.com/cuonggt/kaze/pull/32), [#33](https://github.com/cuonggt/kaze/pull/33), [#34](https://github.com/cuonggt/kaze/pull/34)). shadcn copies source into the project rather than shipping a package, which is how Kaze already works, so the primitives are vendored into `Components/ui` and are yours to edit.
@@ -175,7 +177,8 @@ Together these take a freshly scaffolded Inertia application from seven npm advi
 
 Releases before 1.0.0 are not catalogued here. See the [tags](https://github.com/cuonggt/kaze/tags) for their history.
 
-[Unreleased]: https://github.com/cuonggt/kaze/compare/v1.4.0...HEAD
+[Unreleased]: https://github.com/cuonggt/kaze/compare/v2.0.0...HEAD
+[2.0.0]: https://github.com/cuonggt/kaze/compare/v1.4.0...v2.0.0
 [1.4.0]: https://github.com/cuonggt/kaze/compare/v1.3.1...v1.4.0
 [1.3.1]: https://github.com/cuonggt/kaze/compare/v1.3.0...v1.3.1
 [1.3.0]: https://github.com/cuonggt/kaze/compare/v1.2.1...v1.3.0
