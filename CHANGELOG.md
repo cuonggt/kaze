@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [2.1.1] - 2026-10-25
+
 ### Fixed
 
 - User-visible text now reads the same across the three stacks and within a page. Hotwire's login button said "Login" where React and Vue said "Log in", which is what prompted this — but the sweep found the real problem was that the 2.0.0 settings area introduced sentence case ("Profile information", "Delete account") while the auth pages kept the title case inherited from Breeze ("Reset Password", "Confirm Password"), so the two conventions met inside the same screen. The delete-account page had a "Delete account" heading directly above a "Delete Account" button.
@@ -215,7 +217,8 @@ Together these take a freshly scaffolded Inertia application from seven npm advi
 
 Releases before 1.0.0 are not catalogued here. See the [tags](https://github.com/cuonggt/kaze/tags) for their history.
 
-[Unreleased]: https://github.com/cuonggt/kaze/compare/v2.1.0...HEAD
+[Unreleased]: https://github.com/cuonggt/kaze/compare/v2.1.1...HEAD
+[2.1.1]: https://github.com/cuonggt/kaze/compare/v2.1.0...v2.1.1
 [2.1.0]: https://github.com/cuonggt/kaze/compare/v2.0.1...v2.1.0
 [2.0.1]: https://github.com/cuonggt/kaze/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/cuonggt/kaze/compare/v1.4.0...v2.0.0
