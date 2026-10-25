@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Internal
+
+- `bin/release` now promotes the changelog itself, and refuses to run when the ground is not safe. Cutting 2.1.1 showed the old script had drifted out of step with the project: it bumped `lib/kaze/version.rb` in one commit and left the `[Unreleased]` heading to be promoted in another, which puts a commit on master where the version and the newest changelog heading disagree — exactly what the gem's own test suite asserts against. Both now move in the same commit.
+
+  It also had no `set -e`, so a failed `git push` went on to tag the commit and publish the gem anyway. It now stops at the first failure, and checks before touching anything that the branch is master, the tree is clean, master and origin agree, the tag does not already exist, and `[Unreleased]` actually has something in it. The test suite runs before the push rather than after.
+
 ## [2.1.1] - 2026-10-25
 
 ### Fixed
