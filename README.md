@@ -2,11 +2,23 @@
 
 # Kaze
 
+[![Gem Version](https://img.shields.io/gem/v/kaze)](https://rubygems.org/gems/kaze)
+[![Tests](https://github.com/cuonggt/kaze/actions/workflows/tests.yml/badge.svg)](https://github.com/cuonggt/kaze/actions/workflows/tests.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE.md)
+
 Heavily inspired by [Laravel Breeze](https://github.com/laravel/breeze), this gem offers authentication and application starter kits to give you a head start building your new [Rails](https://rubyonrails.org) application. These kits automatically scaffold your application with the routes, controllers, and views you need to register and authenticate your application's users.
 
 [Kaze](https://github.com/cuonggt/kaze) is an opinionated, minimal, simple implementation of all authentication features that a modern web application should have, including login, registration, password reset, and email verification. In addition, Kaze includes a settings area where the user may update their name and email address, change their password, choose an appearance, and delete their account.
 
 Kaze provides scaffolding options based on [Hotwire](https://hotwired.dev) or [Inertia](https://inertiajs.com), with the choice of using Vue or React for the Inertia-based scaffolding.
+
+![Profile settings](/art/screenshots/settings-light.jpg)
+
+| | |
+|---|---|
+| ![The same page in dark mode](/art/screenshots/settings-dark.jpg) | ![Logging in](/art/screenshots/login-light.jpg) |
+
+The three stacks are built to the same design, so these are from the React one.
 
 ## Installation
 
