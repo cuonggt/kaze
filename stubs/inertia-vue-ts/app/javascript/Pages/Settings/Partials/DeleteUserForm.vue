@@ -49,7 +49,7 @@ const closeModal = () => {
 
 <template>
   <section class="space-y-6">
-    <Button variant="destructive" @click="confirmUserDeletion">Delete Account</Button>
+    <Button variant="destructive" @click="confirmUserDeletion">Delete account</Button>
 
     <Dialog v-model:open="confirmingUserDeletion">
       <DialogContent>
@@ -87,7 +87,7 @@ const closeModal = () => {
             :disabled="form.processing"
             @click="deleteUser"
           >
-            Delete Account
+            Delete account
           </Button>
         </DialogFooter>
       </DialogContent>

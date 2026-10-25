@@ -41,7 +41,7 @@ export default function UpdatePasswordForm({ className = '' }: { className?: str
     <section className={className}>
       <form onSubmit={updatePassword} className="space-y-6">
         <div>
-          <Label htmlFor="current_password">Current Password</Label>
+          <Label htmlFor="current_password">Current password</Label>
 
           <Input
             id="current_password"
@@ -57,7 +57,7 @@ export default function UpdatePasswordForm({ className = '' }: { className?: str
         </div>
 
         <div>
-          <Label htmlFor="password">New Password</Label>
+          <Label htmlFor="password">New password</Label>
 
           <Input
             id="password"
@@ -73,7 +73,7 @@ export default function UpdatePasswordForm({ className = '' }: { className?: str
         </div>
 
         <div>
-          <Label htmlFor="password_confirmation">Confirm Password</Label>
+          <Label htmlFor="password_confirmation">Confirm password</Label>
 
           <Input
             id="password_confirmation"

@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Fixed
+
+- User-visible text now reads the same across the three stacks and within a page. Hotwire's login button said "Login" where React and Vue said "Log in", which is what prompted this — but the sweep found the real problem was that the 2.0.0 settings area introduced sentence case ("Profile information", "Delete account") while the auth pages kept the title case inherited from Breeze ("Reset Password", "Confirm Password"), so the two conventions met inside the same screen. The delete-account page had a "Delete account" heading directly above a "Delete Account" button.
+
+  Everything settles on sentence case, matching the settings area and Laravel's current kits: "Log in", "Log out", "Reset password", "Confirm password", "Current password", "New password", "Delete account", "Email password reset link", "Resend verification email", and the "Forgot password" and "Email verification" page titles. Mailer copy is left in title case — a different surface, and Laravel's reset email keeps it too.
+
 ### Documentation
 
 - Screenshots and badges in the README. A starter kit whose selling point is what it looks like had no picture of itself anywhere — someone evaluating Kaze had to install it to find out. Three captures of the real scaffolded application cover the sidebar shell, the settings area and both themes, at 48 KB in total and outside the gem's packaged files.

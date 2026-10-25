@@ -55,7 +55,7 @@ export default function DeleteUserForm({ className = '' }: { className?: string 
   return (
     <section className={`space-y-6 ${className}`}>
       <Button variant="destructive" onClick={confirmUserDeletion}>
-        Delete Account
+        Delete account
       </Button>
 
       <Dialog open={confirmingUserDeletion} onOpenChange={(open) => !open && closeModal()}>
@@ -96,7 +96,7 @@ export default function DeleteUserForm({ className = '' }: { className?: string 
               </Button>
 
               <Button variant="destructive" disabled={processing}>
-                Delete Account
+                Delete account
               </Button>
             </DialogFooter>
           </form>
