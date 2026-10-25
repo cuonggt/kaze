@@ -8,6 +8,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Documentation
 
+- Screenshots and badges in the README. A starter kit whose selling point is what it looks like had no picture of itself anywhere — someone evaluating Kaze had to install it to find out. Three captures of the real scaffolded application cover the sidebar shell, the settings area and both themes, at 48 KB in total and outside the gem's packaged files.
+
 - A README section on the frontend. The 2.0.0 redesign is the largest change this project has had and the README described none of it — what shadcn/ui means here, that the primitives are yours to edit, how to add more with `npx shadcn@latest add`, the capitalised `@/Components` alias that will bite anyone hand-writing an import, the token and appearance systems, and why the Hotwire stack hand-rolls its own equivalents.
 
 ### Internal
