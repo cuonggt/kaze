@@ -1,14 +1,77 @@
 #!/usr/bin/env bash
+#
+# Cuts a release: promotes the changelog, bumps the version, tags, and pushes
+# the gem.
+#
+#   bin/release 2.2.0
+#
+# The changelog heading and lib/kaze/version.rb move in the same commit on
+# purpose. The gem's own test suite asserts they match, so splitting them
+# leaves a commit on master that fails CI.
 
-VERSION=$1
+set -euo pipefail
 
-printf "module Kaze\n  VERSION = '$VERSION'\nend\n" > ./lib/kaze/version.rb
-bundle
-git add Gemfile.lock lib/kaze/version.rb
-git commit -m "Bump version for $VERSION"
-git push
-git tag v$VERSION
-git push --tags
+VERSION=${1:-}
+GEM="kaze-${VERSION}.gem"
+
+die() { printf '\033[31m%s\033[0m\n' "$*" >&2; exit 1; }
+step() { printf '\033[35m==> %s\033[0m\n' "$*"; }
+
+[ -n "$VERSION" ] || die "Usage: bin/release <version>   e.g. bin/release 2.2.0"
+[[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || die "Version must look like 2.2.0, got '$VERSION'."
+
+cd "$(dirname "$0")/.."
+
+# Everything below the push is irreversible, so check the ground first.
+step "Checking the working tree"
+[ "$(git rev-parse --abbrev-ref HEAD)" = "master" ] || die "Releases are cut from master."
+[ -z "$(git status --porcelain)" ] || die "Working tree is not clean. Commit or stash first."
+git fetch --quiet origin
+[ "$(git rev-parse HEAD)" = "$(git rev-parse origin/master)" ] || die "master and origin/master have diverged. Pull or push first."
+git rev-parse -q --verify "refs/tags/v${VERSION}" >/dev/null && die "Tag v${VERSION} already exists."
+
+step "Promoting the changelog"
+ruby - "$VERSION" <<'RUBY'
+version = ARGV[0]
+path = 'CHANGELOG.md'
+s = File.read(path, encoding: 'UTF-8')
+
+body = s[/^## \[Unreleased\]\n(.*?)(?=^## \[)/m, 1].to_s
+abort "  CHANGELOG has nothing under [Unreleased]. Nothing to release." if body.strip.empty?
+
+previous = s[%r{^\[Unreleased\]: \S+/compare/v(\S+)\.\.\.HEAD$}, 1]
+abort '  Could not find the [Unreleased] compare link in CHANGELOG.md.' if previous.nil?
+
+s = s.sub("## [Unreleased]\n", "## [Unreleased]\n\n## [#{version}] - #{Time.now.strftime('%Y-%m-%d')}\n")
+s = s.sub(
+  "[Unreleased]: https://github.com/cuonggt/kaze/compare/v#{previous}...HEAD\n",
+  "[Unreleased]: https://github.com/cuonggt/kaze/compare/v#{version}...HEAD\n" \
+  "[#{version}]: https://github.com/cuonggt/kaze/compare/v#{previous}...v#{version}\n"
+)
+File.write(path, s)
+puts "  [Unreleased] -> [#{version}], previous was #{previous}"
+RUBY
+
+step "Bumping the version"
+printf "module Kaze\n  VERSION = '%s'\nend\n" "$VERSION" > ./lib/kaze/version.rb
+bundle --quiet
+
+step "Running the test suite"
+bundle exec rake
+
+step "Committing"
+git add CHANGELOG.md Gemfile.lock lib/kaze/version.rb
+git commit --quiet -m "Bump version for $VERSION"
+
+step "Pushing"
+git push --quiet
+git tag "v${VERSION}"
+git push --quiet --tags
+
+step "Building and pushing the gem"
+trap 'rm -f "$GEM"' EXIT
 gem build kaze.gemspec
-gem push "kaze-$VERSION.gem" --host https://rubygems.org
-rm "kaze-$VERSION.gem"
+gem push "$GEM" --host https://rubygems.org
+
+step "Released $VERSION"
+echo "  Next: gh release create v${VERSION} --title v${VERSION} --notes-file <(…)"
