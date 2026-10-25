@@ -28,7 +28,7 @@
     <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
     <%= render(DropdownLinkComponent.new({ href: logout_path, onclick: "event.preventDefault();this.closest('form').submit()" })) do %>
       <%= render(IconComponent.new('log-out')) %>
-      Log Out
+      Log out
     <% end %>
   </form>
 <% end %>

@@ -1,6 +1,6 @@
 <section class="space-y-6">
   <%= render(DangerButtonComponent.new({"x-data": "", "x-on:click.prevent": "$dispatch('open-modal', 'confirm-user-deletion')"})) do %>
-    Delete Account
+    Delete account
   <% end %>
 </section>
 <%= render 'settings/profile/confirm_user_deletion_modal' %>

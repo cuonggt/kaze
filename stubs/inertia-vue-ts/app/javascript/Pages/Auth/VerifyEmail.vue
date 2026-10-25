@@ -20,7 +20,7 @@ const verificationLinkSent = computed(() => props.status === 'verification-link-
 
 <template>
   <GuestLayout>
-    <Head title="Email Verification" />
+    <Head title="Email verification" />
 
     <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
       Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just
@@ -34,7 +34,7 @@ const verificationLinkSent = computed(() => props.status === 'verification-link-
     <form @submit.prevent="submit">
       <div class="mt-4 flex items-center justify-between">
         <Button :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-          Resend Verification Email
+          Resend verification email
         </Button>
 
         <Link
@@ -42,7 +42,7 @@ const verificationLinkSent = computed(() => props.status === 'verification-link-
           method="post"
           as="button"
           class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
-          >Log Out</Link
+          >Log out</Link
         >
       </div>
     </form>

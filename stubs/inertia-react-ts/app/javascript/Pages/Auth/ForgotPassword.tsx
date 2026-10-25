@@ -19,7 +19,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
 
   return (
     <GuestLayout>
-      <Head title="Forgot Password" />
+      <Head title="Forgot password" />
 
       <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
         Forgot your password? No problem. Just let us know your email address and we will email you a password reset
@@ -43,7 +43,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
 
         <div className="flex items-center justify-end mt-4">
           <Button className="ms-4" disabled={processing}>
-            Email Password Reset Link
+            Email password reset link
           </Button>
         </div>
       </form>

@@ -10,14 +10,14 @@
   <form method="POST" action="<%= verification_send_path %>">
     <div>
       <%= render(PrimaryButtonComponent.new) do %>
-        Resend Verification Email
+        Resend verification email
       <% end %>
     </div>
   </form>
   <form method="POST" action="<%= logout_path %>">
     <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
     <button type="submit" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">
-      Log Out
+      Log out
     </button>
   </form>
 </div>

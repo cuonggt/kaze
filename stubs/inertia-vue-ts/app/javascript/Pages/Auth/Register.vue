@@ -75,7 +75,7 @@ const submit = () => {
       </div>
 
       <div class="mt-4">
-        <Label for="password_confirmation">Confirm Password</Label>
+        <Label for="password_confirmation">Confirm password</Label>
 
         <Input
           id="password_confirmation"

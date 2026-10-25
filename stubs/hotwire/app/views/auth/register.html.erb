@@ -17,9 +17,9 @@
     <%= render(TextInputComponent.new({ id: "password", class: "block mt-1 w-full", type: "password", name: "password", required: true, autocomplete: "new-password" })) %>
     <%= render(InputErrorComponent.new({ class: "mt-2", message: @form.error_messages[:password] })) %>
   </div>
-  <!-- Confirm Password -->
+  <!-- Confirm password -->
   <div class="mt-4">
-    <%= render(InputLabelComponent.new({ for: "password_confirmation", value: "Confirm Password" })) %>
+    <%= render(InputLabelComponent.new({ for: "password_confirmation", value: "Confirm password" })) %>
     <%= render(TextInputComponent.new({ id: "password_confirmation", class: "block mt-1 w-full", type: "password", name: "password_confirmation", required: true, autocomplete: "new-password" })) %>
     <%= render(InputErrorComponent.new({ class: "mt-2", message: @form.error_messages[:password_confirmation] })) %>
   </div>

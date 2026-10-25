@@ -80,7 +80,7 @@ export default function Register() {
         </div>
 
         <div className="mt-4">
-          <Label htmlFor="password_confirmation">Confirm Password</Label>
+          <Label htmlFor="password_confirmation">Confirm password</Label>
 
           <Input
             id="password_confirmation"
