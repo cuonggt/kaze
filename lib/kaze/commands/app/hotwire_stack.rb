@@ -20,7 +20,7 @@ class Kaze::Commands::App::HotwireStack < Kaze::Commands::App::BaseStack
   def install
     # Gems...
     return unless remove_gems([ 'sprockets-rails', 'stimulus-rails' ])
-    return unless install_gems([ 'propshaft', 'view_component', 'turbo-rails', 'dotenv', 'bcrypt' ])
+    return unless install_gems([ 'propshaft', 'view_component', 'turbo-rails', 'dotenv', 'bcrypt', 'rotp', 'rqrcode' ])
     return unless run_bundle_command("#{bundle_command} add tailwindcss-rails --version=\"~> 4.0\"").success?
     return unless install_gems([ 'hotwire-livereload' ], 'development')
     return unless install_gems([ 'factory_bot_rails', 'faker' ], 'development, test')
@@ -64,6 +64,8 @@ class Kaze::Commands::App::HotwireStack < Kaze::Commands::App::BaseStack
 
     # Routes...
     FileUtils.copy_file("#{stubs_path}/default/config/routes.rb", "#{Dir.pwd}/config/routes.rb")
+    ensure_directory_exists("#{Dir.pwd}/config/initializers")
+    FileUtils.copy_file("#{stubs_path}/default/config/initializers/active_record_encryption.rb", "#{Dir.pwd}/config/initializers/active_record_encryption.rb")
 
     # Migrations...
     install_migrations

@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Added
+
+- The groundwork for two-factor authentication: a `TwoFactorAuthenticatable` concern on `User`, the columns it needs, and `rotp` and `rqrcode` as dependencies. Nothing is wired into the login flow or the settings area yet — that comes next — so this changes nothing a user can see.
+
+  Setup is two steps on purpose, as it is in Laravel's kits. `prepare_two_factor` generates a secret and eight single-use recovery codes, and `confirm_two_factor` only marks the account protected once the user has read a working code back. Walking away halfway leaves the account exactly as it was rather than locked out. Codes verify with a step of drift either side, so a slightly wrong clock or a code typed as it expired still works.
+
+  The secret and the recovery codes are encrypted at rest with Active Record Encryption. That normally needs three keys a generated application does not have, so a new `config/initializers/active_record_encryption.rb` derives them from `secret_key_base` — encrypted attributes work from the first boot with no extra setup. The trade-off is that rotating `secret_key_base` makes existing ciphertext unreadable; the initializer says so and points at `bin/rails db:encryption:init` for anyone who would rather manage the keys separately.
+
 ### Internal
 
 - `bin/release` now promotes the changelog itself, and refuses to run when the ground is not safe. Cutting 2.1.1 showed the old script had drifted out of step with the project: it bumped `lib/kaze/version.rb` in one commit and left the `[Unreleased]` heading to be promoted in another, which puts a commit on master where the version and the newest changelog heading disagree — exactly what the gem's own test suite asserts against. Both now move in the same commit.
