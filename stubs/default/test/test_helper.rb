@@ -10,6 +10,11 @@ module ActiveSupport
     # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
     fixtures :all
 
+    # Rate limits are counted in the cache, which outlives the transaction each
+    # test is rolled back in -- and rolled back ids get reused, so one test's
+    # attempts would otherwise count against the next one's.
+    setup { Rails.cache.clear }
+
     # Add more helper methods to be used by all tests here...
     def acting_as(user)
       post login_path, params: { email: user.email, password: 'password' }

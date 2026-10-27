@@ -82,6 +82,18 @@ class Kaze::Commands::App::BaseStack
     Dir.children("#{Dir.pwd}/db/migrate").each { |file| replace_in_file(/ActiveRecord::Migration$/, "ActiveRecord::Migration[#{railsVersion}]", "#{Dir.pwd}/db/migrate/#{file}") }
   end
 
+  # Rate limiting counts attempts in the cache, and a generated application uses
+  # the null store in test -- which silently accepts every write, so a limit can
+  # never trip and could never be tested. Development and production already
+  # have real stores.
+  def enable_test_cache_store
+    path = "#{Dir.pwd}/config/environments/test.rb"
+
+    return unless File.exist?(path)
+
+    replace_in_file(/^  config\.cache_store = :null_store$/, '  config.cache_store = :memory_store', path)
+  end
+
   def install_tests
     ensure_directory_exists("#{Dir.pwd}/test/factories")
     ensure_directory_exists("#{Dir.pwd}/test/integration")

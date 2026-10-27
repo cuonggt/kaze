@@ -61,6 +61,7 @@ class Kaze::Commands::App::HotwireStack < Kaze::Commands::App::BaseStack
 
     # Tests...
     install_tests
+    enable_test_cache_store
 
     # Routes...
     FileUtils.copy_file("#{stubs_path}/default/config/routes.rb", "#{Dir.pwd}/config/routes.rb")
