@@ -85,3 +85,75 @@ jobs:
         run: |
           echo "stub-tests result: ${{ needs.stub-tests.result }}"
           test "${{ needs.stub-tests.result }}" = "success"
+
+  # stub-tests installs into an empty application. This upgrades a real one:
+  # the released gem first, then work of the application's own beside it, then
+  # this checkout over the top. Both of 2.2.1's bugs emptied a file that was
+  # already there, which an install into an empty directory cannot show.
+  upgrade-tests:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        stack: [hotwire, react, vue]
+        rails: [8.1]
+
+    name: Test Upgrade - Rails ${{ matrix.rails }} - ${{ matrix.stack }}
+
+    steps:
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.4
+          bundler-cache: true
+
+      - name: Setup Rails
+        run: |
+          gem install rails -v ${{ matrix.rails }}
+          rails new .
+          bundle add bcrypt
+
+      - name: Checkout code
+        uses: actions/checkout@v7
+        with:
+          path: 'kaze'
+
+      # The released gem rather than this checkout, so the job upgrades from
+      # what people actually have installed. No version is pinned, so this
+      # never goes stale -- and once a release matches the checkout it becomes
+      # the re-run case, which is how test.rb was emptied.
+      - name: Install the released Kaze
+        run: |
+          bundle add kaze
+          bundle exec kaze install ${{ matrix.stack }}
+
+      - name: Write work of the application's own
+        run: ruby kaze/test/support/own_work.rb write .
+
+      - name: Upgrade with this checkout
+        run: |
+          bundle remove kaze
+          bundle add kaze --path ./kaze
+          bundle exec kaze upgrade ${{ matrix.stack }} --force
+
+      - name: Check the application's own work came through untouched
+        run: ruby kaze/test/support/own_work.rb verify .
+
+      - name: Execute tests
+        run: |
+          bundle exec rails db:prepare
+          bundle exec rake test
+
+  upgrade-tests-complete:
+    runs-on: ubuntu-latest
+    needs: upgrade-tests
+    if: always()
+
+    name: Upgrade Tests
+
+    steps:
+      - name: Check matrix result
+        run: |
+          echo "upgrade-tests result: ${{ needs.upgrade-tests.result }}"
+          test "${{ needs.upgrade-tests.result }}" = "success"
