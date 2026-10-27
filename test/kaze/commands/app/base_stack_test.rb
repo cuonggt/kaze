@@ -110,22 +110,18 @@ class BaseStackTest < Kaze::TestCase
   # The rewrite used to walk the whole of db/migrate, where the pattern only
   # fits the migrations Kaze ships -- an application's own already carry a
   # version suffix, so they matched nothing and were emptied.
-  def test_install_migrations_leaves_the_applications_own_migrations_alone
-    in_app do |dir|
+  def test_install_migrations_leaves_the_applications_own_work_alone
+    in_app_with_own_work do |dir|
       fake_rails(dir)
-      own = "#{dir}/db/migrate/20260101000000_add_bio_to_users.rb"
-      body = "class AddBioToUsers < ActiveRecord::Migration[8.1]\n  def change\n  end\nend\n"
-      FileUtils.mkdir_p(File.dirname(own))
-      File.write(own, body)
 
       @stack.send(:install_migrations)
 
-      assert_equal body, File.read(own)
+      assert_own_work_untouched(dir)
     end
   end
 
   def test_install_migrations_writes_the_rails_version_into_the_ones_it_ships
-    in_app do |dir|
+    in_app_with_own_work do |dir|
       fake_rails(dir)
 
       @stack.send(:install_migrations)
@@ -138,11 +134,89 @@ class BaseStackTest < Kaze::TestCase
     end
   end
 
+  # Kaze copies its own tests in beside whatever is already there.
+  def test_install_tests_leaves_the_applications_own_work_alone
+    in_app_with_own_work do |dir|
+      @stack.send(:install_tests)
+
+      assert_own_work_untouched(dir)
+    end
+  end
+
+  def test_install_tests_installs_the_ones_it_ships
+    in_app_with_own_work do |dir|
+      @stack.send(:install_tests)
+
+      assert_path_exists "#{dir}/test/test_helper.rb"
+      assert_path_exists "#{dir}/test/models/two_factor_authenticatable_test.rb"
+      assert_path_exists "#{dir}/test/integration/auth/authentication_test.rb"
+    end
+  end
+
+  def test_enable_test_cache_store_leaves_the_applications_own_work_alone
+    in_app_with_own_work do |dir|
+      write_test_environment(dir)
+
+      @stack.send(:enable_test_cache_store)
+
+      assert_own_work_untouched(dir)
+    end
+  end
+
+  def test_enable_test_cache_store_changes_only_the_cache_store_line
+    in_app_with_own_work do |dir|
+      path = write_test_environment(dir)
+
+      @stack.send(:enable_test_cache_store)
+
+      assert_equal TEST_ENVIRONMENT.sub(':null_store', ':memory_store'), File.read(path)
+    end
+  end
+
+  # Running an install twice is ordinary -- `kaze upgrade` is an install, and so
+  # is re-running `kaze install`. The second pass found no :null_store left to
+  # match and emptied the file.
+  def test_enable_test_cache_store_is_safe_to_run_twice
+    in_app_with_own_work do |dir|
+      path = write_test_environment(dir)
+
+      2.times { @stack.send(:enable_test_cache_store) }
+
+      assert_equal TEST_ENVIRONMENT.sub(':null_store', ':memory_store'), File.read(path)
+      assert_own_work_untouched(dir)
+    end
+  end
+
+  def test_enable_test_cache_store_tolerates_a_missing_file
+    in_app_with_own_work do |dir|
+      @stack.send(:enable_test_cache_store)
+
+      assert_own_work_untouched(dir)
+    end
+  end
+
+  # The upgrade side: what it offers to delete is Kaze's, never the
+  # application's, however alike the two look.
+  def test_removable_paths_never_lists_the_applications_own_work
+    in_app_with_own_work(FakeStack::REMOVED_PATHS) do
+      assert_equal FakeStack::REMOVED_PATHS.sort, @stack.removable_paths.sort
+    end
+  end
+
+  def test_remove_paths_leaves_the_applications_own_work_alone
+    in_app_with_own_work(FakeStack::REMOVED_PATHS) do |dir|
+      @stack.remove_paths(@stack.removable_paths)
+
+      assert_own_work_untouched(dir)
+    end
+  end
+
   private
-    # install_migrations asks the application which Rails it is on.
-    def fake_rails(dir)
-      FileUtils.mkdir_p("#{dir}/bin")
-      File.write("#{dir}/bin/rails", "#!/bin/sh\necho 'Rails 8.1.0'\n")
-      FileUtils.chmod(0o755, "#{dir}/bin/rails")
+    def write_test_environment(dir)
+      path = "#{dir}/config/environments/test.rb"
+      FileUtils.mkdir_p(File.dirname(path))
+      File.write(path, TEST_ENVIRONMENT)
+
+      path
     end
 end
