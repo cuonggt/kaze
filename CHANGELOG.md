@@ -26,6 +26,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
   The secret and the recovery codes are encrypted at rest with Active Record Encryption. That normally needs three keys a generated application does not have, so a new `config/initializers/active_record_encryption.rb` derives them from `secret_key_base` — encrypted attributes work from the first boot with no extra setup. The trade-off is that rotating `secret_key_base` makes existing ciphertext unreadable; the initializer says so and points at `bin/rails db:encryption:init` for anyone who would rather manage the keys separately.
 
+### Fixed
+
+- The first `bin/rails test` run of an Inertia application no longer fails to build its frontend. Vite Ruby builds assets on demand and guards that with a mutex, which only holds within a single process — but `test_helper.rb` runs the suite under `parallelize(workers: :number_of_processors)`, so every forked worker started its own `vite build` against the same manifest, and a worker that read the file while another was writing it died with `Unexpected end of JSON input`. The tests that followed reported the symptom rather than the cause: `Vite Ruby can't find entrypoints/application.tsx in the manifests`.
+
+  Only a first run is exposed, since afterwards there is nothing left to build — which is why this looked like a local flake for as long as it did, and why re-running always cleared it. A fresh checkout on CI is a first run every time, so CI was exposed on every build and had simply been winning the race; it started losing once the two factor work grew the suite. On a ten-core machine a cleared build failed two runs in three.
+
+  `test_helper.rb` now builds once in the parent process before the workers fork, which leaves them nothing to race over, and stops with the reason if that build fails rather than letting it surface three screens later as a missing entrypoint. The Hotwire stack has no Vite and is unaffected.
+
 ### Internal
 
 - `bin/release` now promotes the changelog itself, and refuses to run when the ground is not safe. Cutting 2.1.1 showed the old script had drifted out of step with the project: it bumped `lib/kaze/version.rb` in one commit and left the `[Unreleased]` heading to be promoted in another, which puts a commit on master where the version and the newest changelog heading disagree — exactly what the gem's own test suite asserts against. Both now move in the same commit.
