@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [2.2.0] - 2026-10-27
+
 ### Added
 
 - Rate limiting on the login and two factor forms. Six digits is small enough to guess given enough tries, so the challenge caps attempts at five a minute, keyed on the account being challenged rather than the address — moving between addresses buys no extra attempts. Login is capped at ten a minute, keyed on the email being tried, so one account under attack cannot lock anyone else out.
@@ -259,7 +261,8 @@ Together these take a freshly scaffolded Inertia application from seven npm advi
 
 Releases before 1.0.0 are not catalogued here. See the [tags](https://github.com/cuonggt/kaze/tags) for their history.
 
-[Unreleased]: https://github.com/cuonggt/kaze/compare/v2.1.1...HEAD
+[Unreleased]: https://github.com/cuonggt/kaze/compare/v2.2.0...HEAD
+[2.2.0]: https://github.com/cuonggt/kaze/compare/v2.1.1...v2.2.0
 [2.1.1]: https://github.com/cuonggt/kaze/compare/v2.1.0...v2.1.1
 [2.1.0]: https://github.com/cuonggt/kaze/compare/v2.0.1...v2.1.0
 [2.0.1]: https://github.com/cuonggt/kaze/compare/v2.0.0...v2.0.1
