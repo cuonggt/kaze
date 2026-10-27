@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [2.2.1] - 2026-10-27
+
 ### Added
 
 - The install now says what to do next: `Run bin/rails db:prepare to apply the migrations Kaze installed.` A new application reaches its migrations through `bin/setup`, but an upgrade has no such step, so 2.2.0 handed existing applications the two factor settings page and login challenge while their database still had none of the columns behind them. The `## Upgrading` section of the README says it too.
@@ -275,7 +277,8 @@ Together these take a freshly scaffolded Inertia application from seven npm advi
 
 Releases before 1.0.0 are not catalogued here. See the [tags](https://github.com/cuonggt/kaze/tags) for their history.
 
-[Unreleased]: https://github.com/cuonggt/kaze/compare/v2.2.0...HEAD
+[Unreleased]: https://github.com/cuonggt/kaze/compare/v2.2.1...HEAD
+[2.2.1]: https://github.com/cuonggt/kaze/compare/v2.2.0...v2.2.1
 [2.2.0]: https://github.com/cuonggt/kaze/compare/v2.1.1...v2.2.0
 [2.1.1]: https://github.com/cuonggt/kaze/compare/v2.1.0...v2.1.1
 [2.1.0]: https://github.com/cuonggt/kaze/compare/v2.0.1...v2.1.0
