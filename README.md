@@ -8,7 +8,7 @@
 
 Heavily inspired by [Laravel Breeze](https://github.com/laravel/breeze), this gem offers authentication and application starter kits to give you a head start building your new [Rails](https://rubyonrails.org) application. These kits automatically scaffold your application with the routes, controllers, and views you need to register and authenticate your application's users.
 
-[Kaze](https://github.com/cuonggt/kaze) is an opinionated, minimal, simple implementation of all authentication features that a modern web application should have, including login, registration, password reset, and email verification. In addition, Kaze includes a settings area where the user may update their name and email address, change their password, choose an appearance, and delete their account.
+[Kaze](https://github.com/cuonggt/kaze) is an opinionated, minimal, simple implementation of all authentication features that a modern web application should have, including login, registration, password reset, email verification, and two factor authentication. In addition, Kaze includes a settings area where the user may update their name and email address, change their password, turn two factor authentication on and off, choose an appearance, and delete their account.
 
 Kaze provides scaffolding options based on [Hotwire](https://hotwired.dev) or [Inertia](https://inertiajs.com), with the choice of using Vue or React for the Inertia-based scaffolding.
 
@@ -103,6 +103,18 @@ One thing to know if you reach for that: Kaze uses a capitalised `@/Components`,
 Colour runs through design tokens — `bg-background`, `text-muted-foreground`, `border-sidebar-border` and so on, defined once per stylesheet as oklch variables — rather than per-element `dark:` pairs. Appearance is a user preference of light, dark or system, stored in `localStorage` and applied before first paint so the page never flashes the wrong theme; system follows the device and tracks it live. The application layout is a sidebar that collapses to icons and becomes a drawer on small screens, remembering its state in a cookie the server reads back.
 
 There is no shadcn for Hotwire. That stack gets the same look from ViewComponents written against the same tokens, with the handful of [lucide](https://lucide.dev) icons the layouts need inlined into an `IconComponent`, since it carries no npm dependencies at all.
+
+## Two factor authentication
+
+Two factor authentication is time-based one-time passwords, the kind an authenticator app generates. A user turns it on from `/settings/two-factor`, scans the QR code shown there — or types the key, if scanning is not possible — and the account is only protected once they have read a code back. Walking away from a half-finished setup leaves the account exactly as it was rather than locked out.
+
+Once it is on, a correct password no longer signs anyone in on its own: it holds them at a challenge that asks for a code, or for one of the eight single-use recovery codes the settings page lists. Turning it off asks for the current password, so a session someone else is holding is not enough to undo it.
+
+The secret and the recovery codes are encrypted in the database with Active Record Encryption. That normally needs three keys a generated application does not have, so Kaze ships a `config/initializers/active_record_encryption.rb` that derives them from `secret_key_base`. Nothing to configure, with one consequence worth knowing: **rotating `secret_key_base` makes existing secrets unreadable**, and anyone who has turned two factor on will need to set it up again. To manage the keys separately instead, run `bin/rails db:encryption:init` and move them into your credentials.
+
+Both forms are rate limited — five attempts a minute on the challenge, ten on login. Rails counts these in the cache, so Kaze sets the test environment to the memory store, since the null store a generated application uses there would accept every write and let a limit look like it was working while it did nothing.
+
+The model side lives in a `TwoFactorAuthenticatable` concern on `User`, next to `CanResetPassword`, if you want to drive it from your own code.
 
 ## Upgrading
 

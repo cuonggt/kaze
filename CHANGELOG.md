@@ -26,6 +26,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
   The secret and the recovery codes are encrypted at rest with Active Record Encryption. That normally needs three keys a generated application does not have, so a new `config/initializers/active_record_encryption.rb` derives them from `secret_key_base` — encrypted attributes work from the first boot with no extra setup. The trade-off is that rotating `secret_key_base` makes existing ciphertext unreadable; the initializer says so and points at `bin/rails db:encryption:init` for anyone who would rather manage the keys separately.
 
+### Documentation
+
+- A README section on two factor authentication. The feature spans three pull requests and touches the login flow, the settings area and the database, and none of it was written down anywhere a user would look. The section covers the two-step setup, the challenge and the recovery codes, the password gate on turning it off, and the `TwoFactorAuthenticatable` concern for anyone driving it from their own code.
+
+  It also states the one consequence of deriving the encryption keys from `secret_key_base`: rotating that key makes existing two factor secrets unreadable, and anyone who had it turned on has to set it up again. That belongs in the README rather than only in a comment in the initializer, since the person who rotates a secret is not usually the person reading initializers.
+
 ### Internal
 
 - `bin/release` now promotes the changelog itself, and refuses to run when the ground is not safe. Cutting 2.1.1 showed the old script had drifted out of step with the project: it bumped `lib/kaze/version.rb` in one commit and left the `[Unreleased]` heading to be promoted in another, which puts a commit on master where the version and the newest changelog heading disagree — exactly what the gem's own test suite asserts against. Both now move in the same commit.
