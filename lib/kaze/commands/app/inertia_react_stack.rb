@@ -108,8 +108,7 @@ class Kaze::Commands::App::InertiaReactStack < Kaze::Commands::App::BaseStack
 
     return unless node_dependencies_installed
 
-    say ''
-    say 'Kaze scaffolding installed successfully.', :green
+    say_installed_successfully
 
     true
   end

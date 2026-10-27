@@ -74,12 +74,17 @@ class Kaze::Commands::App::BaseStack
 
   def install_migrations
     stdin, _ = Open3.capture3("#{Dir.pwd}/bin/rails version")
-    versions = stdin.gsub!('Rails ', '').split('.')
+    versions = stdin.gsub('Rails ', '').split('.')
     railsVersion = [ versions[0], versions[1] ].join('.')
 
     ensure_directory_exists("#{Dir.pwd}/db/migrate")
+
+    # Only the migrations Kaze ships get the version written into them. The
+    # application's own already carry one, and are none of our business.
+    migrations = Dir.children("#{stubs_path}/default/db/migrate")
+
     FileUtils.copy_entry("#{stubs_path}/default/db/migrate", "#{Dir.pwd}/db/migrate")
-    Dir.children("#{Dir.pwd}/db/migrate").each { |file| replace_in_file(/ActiveRecord::Migration$/, "ActiveRecord::Migration[#{railsVersion}]", "#{Dir.pwd}/db/migrate/#{file}") }
+    migrations.each { |file| replace_in_file(/ActiveRecord::Migration$/, "ActiveRecord::Migration[#{railsVersion}]", "#{Dir.pwd}/db/migrate/#{file}") }
   end
 
   # Rate limiting counts attempts in the cache, and a generated application uses
@@ -108,8 +113,23 @@ class Kaze::Commands::App::BaseStack
     FileUtils.mkdir_p(path) unless File.directory?(path)
   end
 
+  # Kaze ships migrations, and an install that adds one leaves the application
+  # holding code for columns the database does not have yet. A new application
+  # reaches them through `bin/setup`, but an upgrade of an existing one has no
+  # such step, so say it here where the person is already looking.
+  def say_installed_successfully
+    say ''
+    say 'Kaze scaffolding installed successfully.', :green
+    say ''
+    say 'Run `bin/rails db:prepare` to apply the migrations Kaze installed.', :yellow
+  end
+
+  # NOTE: `gsub`, not `gsub!`. The bang form returns nil when it matched
+  # nothing, and writing that back truncates the file to nothing -- so a
+  # pattern that had already been applied, or that an application had edited
+  # out, silently emptied the file instead of leaving it alone.
   def replace_in_file(search, replace, path)
-    File.write(path, File.read(path).gsub!(search, replace))
+    File.write(path, File.read(path).gsub(search, replace))
   end
 
   def run_command(command)

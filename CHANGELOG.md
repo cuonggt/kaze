@@ -6,6 +6,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Added
+
+- The install now says what to do next: `Run bin/rails db:prepare to apply the migrations Kaze installed.` A new application reaches its migrations through `bin/setup`, but an upgrade has no such step, so 2.2.0 handed existing applications the two factor settings page and login challenge while their database still had none of the columns behind them. The `## Upgrading` section of the README says it too.
+
+### Fixed
+
+- `kaze install` and `kaze upgrade` no longer empty files. `replace_in_file` wrote the result of `String#gsub!` back to disk, and the bang form returns `nil` when it matched nothing — so `File.write` truncated the file to nothing. Every call site passes a pattern that can legitimately be absent, either because an earlier install already applied it or because the application edited it out, and each of those was a file silently destroyed. It is `gsub` now, which returns the string unchanged when it matches nothing.
+
+  Two files were reachable this way. An application's own migrations were emptied on the **first** upgrade: the rewrite that stamps the Rails version into Kaze's migrations walked the whole of `db/migrate`, and the pattern it uses only fits the ones Kaze ships, since a generated migration already carries its `[8.1]` suffix. `rails db:migrate` did not complain, because the version was already recorded and Rails never read the file again — the loss surfaced later, as `NameError: uninitialized constant` on a rollback, or as a schema that could no longer be rebuilt from its migrations. This dates from 2024-07-01 and has been in every release since; it took an application with a migration of its own to show, which is why neither the test suite nor the 1.4.0 upgrade test caught it. The rewrite is now scoped to the files Kaze copied.
+
+  `config/environments/test.rb` was emptied on the **second** upgrade, and on any upgrade of an application already on 2.2.0. `enable_test_cache_store` rewrites `:null_store` to `:memory_store`, so a second run found nothing to match and truncated the file; the suite then came apart with 15 failures and 31 errors. That one was introduced in 2.2.0, a few hours before this fix.
+
+- `install_migrations` no longer crashes if `bin/rails version` prints something unexpected, for the same reason: it called `gsub!` on the output and then `split` on the result.
+
 ## [2.2.0] - 2026-10-27
 
 ### Added
