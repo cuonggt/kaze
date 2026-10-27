@@ -1,0 +1,29 @@
+<p class="text-sm text-muted-foreground">
+  Two factor authentication is on. You will be asked for a code each time you sign in.
+</p>
+<div class="space-y-3 rounded-xl border border-sidebar-border/70 p-4 dark:border-sidebar-border">
+  <div class="text-sm font-medium">Recovery codes</div>
+  <p class="text-sm text-muted-foreground">
+    Keep these somewhere safe. Each one can be used once to sign in if you cannot reach your authenticator app.
+  </p>
+  <ul class="grid grid-cols-2 gap-1 font-mono text-xs">
+    <% Current.auth.user.two_factor_recovery_codes_list.each do |recovery_code| %>
+      <li><%= recovery_code %></li>
+    <% end %>
+  </ul>
+  <%= form_with url: two_factor_recovery_codes_path, method: :post do %>
+    <%= render(SecondaryButtonComponent.new({ type: "submit" })) do %>
+      Generate new codes
+    <% end %>
+  <% end %>
+</div>
+<%= form_with model: @disable_form, url: two_factor_destroy_path, method: :delete, class: "space-y-6" do %>
+  <div>
+    <%= render(InputLabelComponent.new({ for: "password", value: "Current password" })) %>
+    <%= render(TextInputComponent.new({ id: "password", class: "mt-1 block w-full max-w-xs", type: "password", name: "password", autocomplete: "current-password" })) %>
+    <%= render(InputErrorComponent.new({ class: "mt-2", message: @disable_form.error_messages[:password] })) %>
+  </div>
+  <%= render(DangerButtonComponent.new) do %>
+    Turn off two factor authentication
+  <% end %>
+<% end %>

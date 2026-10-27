@@ -1,0 +1,16 @@
+<% content_for(:title, 'Two factor settings') %>
+<% content_for(:breadcrumbs) do %>
+  <%= render(BreadcrumbsComponent.new([ { title: 'Two factor settings', href: two_factor_edit_path } ])) %>
+<% end %>
+<%= render layout: 'layouts/settings' do %>
+  <div class="space-y-6">
+    <%= render(HeadingComponent.new(title: 'Two factor authentication', description: 'Add a second step to signing in, using an authenticator app', variant: 'small')) %>
+    <% if Current.auth.user.two_factor_enabled? %>
+      <%= render 'settings/two_factor/enabled' %>
+    <% elsif Current.auth.user.two_factor_pending? %>
+      <%= render 'settings/two_factor/confirming' %>
+    <% else %>
+      <%= render 'settings/two_factor/disabled' %>
+    <% end %>
+  </div>
+<% end %>

@@ -4,7 +4,7 @@ import Heading from '@/Components/Heading.vue'
 import { Button } from '@/Components/ui/button'
 import { Separator } from '@/Components/ui/separator'
 import { cn } from '@/lib/utils'
-import { appearance_edit_path, password_edit_path, profile_edit_path } from '@/routes'
+import { appearance_edit_path, password_edit_path, profile_edit_path, two_factor_edit_path } from '@/routes'
 import { NavItem } from '@/types'
 
 const sidebarNavItems: NavItem[] = [
@@ -15,6 +15,10 @@ const sidebarNavItems: NavItem[] = [
   {
     title: 'Password',
     href: password_edit_path(),
+  },
+  {
+    title: 'Two factor',
+    href: two_factor_edit_path(),
   },
   {
     title: 'Appearance',
