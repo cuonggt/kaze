@@ -8,6 +8,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Added
 
+- Rate limiting on the login and two factor forms. Six digits is small enough to guess given enough tries, so the challenge caps attempts at five a minute, keyed on the account being challenged rather than the address — moving between addresses buys no extra attempts. Login is capped at ten a minute, keyed on the email being tried, so one account under attack cannot lock anyone else out.
+
+  Rails counts these in the cache, and a generated application uses the null store in test, which accepts every write silently and would let a limit pass as working while doing nothing. The installer now switches the test environment to the memory store so the behaviour is real and testable; development and production already have real stores. `test_helper.rb` clears the cache between tests, since rate limits outlive the transaction a test is rolled back in and rolled-back ids get reused.
+
 - A two factor settings page, at `/settings/two-factor` and in the settings sub-navigation, where two factor can be turned on and off. Turning it on shows a QR code to scan and the key to type if scanning is not possible, and is not finished until a code from the authenticator app is confirmed. Once on, the page lists the eight recovery codes and can regenerate them.
 
   Turning it off asks for the current password. Removing a protection should take more than a session someone else may be holding.

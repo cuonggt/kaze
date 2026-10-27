@@ -64,6 +64,7 @@ class Kaze::Commands::App::InertiaReactStack < Kaze::Commands::App::BaseStack
 
     # Tests...
     install_tests
+    enable_test_cache_store
     FileUtils.copy_entry("#{stubs_path}/inertia-common/test/integration", "#{Dir.pwd}/test/integration")
 
     # Routes...

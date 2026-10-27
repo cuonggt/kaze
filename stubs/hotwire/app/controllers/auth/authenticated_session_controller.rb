@@ -6,6 +6,14 @@ class Auth::AuthenticatedSessionController < ApplicationController
   skip_redirect_if_authenticated only: :destroy
   skip_ensure_email_is_verified only: :destroy
 
+  # Passwords are stronger than a six digit code, but not so strong that
+  # unlimited guesses are safe. Keyed on the email being tried.
+  rate_limit to: 10,
+    within: 1.minute,
+    by: -> { params[:email].to_s.strip.downcase.presence || request.remote_ip },
+    with: -> { too_many_attempts },
+    only: :create
+
   layout 'guest'
 
   def new
@@ -37,6 +45,13 @@ class Auth::AuthenticatedSessionController < ApplicationController
   end
 
   private
+
+    def too_many_attempts
+      @form ||= Auth::LoginForm.new
+      @form.errors.add(:email, message: 'Too many attempts. Try again in a minute.')
+
+      render 'auth/login', status: :too_many_requests
+    end
     # A correct password is not a session when a second factor is owed. Hold the
     # user in the challenge instead and let them prove the rest.
     def start_two_factor_challenge(form)

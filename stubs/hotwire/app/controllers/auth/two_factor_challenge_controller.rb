@@ -5,6 +5,15 @@ class Auth::TwoFactorChallengeController < ApplicationController
   skip_authenticate
   before_action :ensure_challenge_is_pending
 
+  # Six digits is small enough to guess given enough tries, so the attempts are
+  # capped. Keyed on the account being challenged rather than the address, so
+  # moving between addresses does not buy more attempts.
+  rate_limit to: 5,
+    within: 1.minute,
+    by: -> { two_factor_challenge.user&.id || request.remote_ip },
+    with: -> { too_many_attempts },
+    only: :create
+
   layout 'guest'
 
   def new
@@ -24,6 +33,13 @@ class Auth::TwoFactorChallengeController < ApplicationController
   end
 
   private
+
+    def too_many_attempts
+      @form ||= Auth::TwoFactorChallengeForm.new
+      @form.errors.add(:code, message: 'Too many attempts. Try again in a minute.')
+
+      render 'auth/two_factor_challenge', status: :too_many_requests
+    end
     def ensure_challenge_is_pending
       redirect_to login_path unless two_factor_challenge.pending?
     end
