@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Internal
+
+- The gem's tests now run install and upgrade over an application that has work of its own, rather than an empty directory. A shared `OWN_WORK` fixture puts a couple of migrations, a model, a component, an initializer, a factory and two tests in the same directories Kaze writes to, and `assert_own_work_untouched` checks every one of them byte for byte afterwards.
+
+  This is the gap behind 2.2.1. The migration rewrite emptied an application's own migrations for two years, and nothing caught it because every fixture and every upgrade test held nothing but Kaze's own files — there was no one else's work there to destroy. The same blind spot covered `install_tests` copying over someone's tests and `enable_test_cache_store` truncating a config file.
+
+  Eight tests use it, across the three surfaces that touch files an application already had: `install_migrations`, `install_tests` and `enable_test_cache_store`, plus the upgrade's `removable_paths` and `remove_paths`. Each was checked by mutation: restoring both 2.2.1 defects fails four of them, wiping a test directory before copying into it fails another, and a pattern that silently matches nothing fails two more.
+
+
 ## [2.2.1] - 2026-10-27
 
 ### Added
