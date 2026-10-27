@@ -2,6 +2,17 @@ ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
 require 'rails/test_help'
 
+# Build the frontend once, here in the parent process, before `parallelize`
+# forks its workers. Vite Ruby builds on demand and guards it with a Mutex,
+# which only holds within a process: each worker would otherwise start its own
+# `vite build` against the same manifest, and a worker that read it
+# half-written failed with "Unexpected end of JSON input". A first run is the
+# only one exposed -- afterwards there is nothing left to build -- which is
+# exactly the run a fresh checkout on CI does.
+if defined?(ViteRuby) && !ViteRuby.instance.dev_server_running?
+  abort 'Vite build failed. Run `bin/vite build --mode=test` to see why.' unless ViteRuby.commands.build
+end
+
 module ActiveSupport
   class TestCase
     # Run tests in parallel with specified workers
