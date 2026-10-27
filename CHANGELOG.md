@@ -8,6 +8,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Added
 
+- A two factor challenge in the login flow. Where a user has two factor enabled, a correct password no longer starts a session: it holds them in a challenge and asks for a code from their authenticator app, or one of their recovery codes. Users without two factor are unaffected and log straight in as before.
+
+  `SessionGuard#attempt` has been split, so `validate` checks credentials and returns the user without starting a session, and `attempt` is that plus `login`. `Auth::LoginForm` uses the first and exposes the user it found, leaving the controller to decide whether a second factor is still owed. A `TwoFactorChallenge` object holds the pending user in the session and nothing else, so an abandoned challenge grants nothing, and it expires after five minutes because a challenge left open is a password already given. The session id is rotated when the challenge completes, so a session fixed before the password was given cannot survive the second factor.
+
 - The groundwork for two-factor authentication: a `TwoFactorAuthenticatable` concern on `User`, the columns it needs, and `rotp` and `rqrcode` as dependencies. Nothing is wired into the login flow or the settings area yet — that comes next — so this changes nothing a user can see.
 
   Setup is two steps on purpose, as it is in Laravel's kits. `prepare_two_factor` generates a secret and eight single-use recovery codes, and `confirm_two_factor` only marks the account protected once the user has read a working code back. Walking away halfway leaves the account exactly as it was rather than locked out. Codes verify with a step of drift either side, so a slightly wrong clock or a code typed as it expired still works.

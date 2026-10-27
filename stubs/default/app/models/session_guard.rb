@@ -38,13 +38,20 @@ class SessionGuard
   end
 
   def attempt(credentials = {}, remember = false)
-    @last_attempted = user = User.authenticate_by(credentials)
+    user = validate(credentials)
 
     return false if user.nil?
 
     login(user, remember)
 
     true
+  end
+
+  # Checks credentials and returns the user without starting a session. The two
+  # factor challenge needs this: a correct password is not enough to be logged
+  # in when a second factor is required.
+  def validate(credentials = {})
+    @last_attempted = User.authenticate_by(credentials)
   end
 
   def login(user, remember = false)
