@@ -79,4 +79,70 @@ class BaseStackTest < Kaze::TestCase
   def test_install_is_not_implemented_on_the_base
     assert_raises(NotImplementedError) { Kaze::Commands::App::BaseStack.new.install }
   end
+
+  # `gsub!` returns nil when it matched nothing, and writing that back emptied
+  # the file. Every call site passes a pattern that may legitimately be absent
+  # -- already applied by an earlier install, or edited out by the application
+  # -- so missing has to mean leave it alone.
+  def test_replace_in_file_leaves_a_file_alone_when_nothing_matches
+    in_app do |dir|
+      path = "#{dir}/config/environments/test.rb"
+      FileUtils.mkdir_p(File.dirname(path))
+      File.write(path, "Rails.application.configure do\nend\n")
+
+      @stack.send(:replace_in_file, /^  config\.cache_store = :null_store$/, '  config.cache_store = :memory_store', path)
+
+      assert_equal "Rails.application.configure do\nend\n", File.read(path)
+    end
+  end
+
+  def test_replace_in_file_substitutes_when_it_matches
+    in_app do |dir|
+      path = "#{dir}/Procfile.dev"
+      File.write(path, "#vite: bin/vite dev\n")
+
+      @stack.send(:replace_in_file, '#vite: bin/vite dev', 'vite: bin/vite dev', path)
+
+      assert_equal "vite: bin/vite dev\n", File.read(path)
+    end
+  end
+
+  # The rewrite used to walk the whole of db/migrate, where the pattern only
+  # fits the migrations Kaze ships -- an application's own already carry a
+  # version suffix, so they matched nothing and were emptied.
+  def test_install_migrations_leaves_the_applications_own_migrations_alone
+    in_app do |dir|
+      fake_rails(dir)
+      own = "#{dir}/db/migrate/20260101000000_add_bio_to_users.rb"
+      body = "class AddBioToUsers < ActiveRecord::Migration[8.1]\n  def change\n  end\nend\n"
+      FileUtils.mkdir_p(File.dirname(own))
+      File.write(own, body)
+
+      @stack.send(:install_migrations)
+
+      assert_equal body, File.read(own)
+    end
+  end
+
+  def test_install_migrations_writes_the_rails_version_into_the_ones_it_ships
+    in_app do |dir|
+      fake_rails(dir)
+
+      @stack.send(:install_migrations)
+
+      Dir.children("#{stubs_path}/default/db/migrate").each do |file|
+        migration = File.read("#{dir}/db/migrate/#{file}")
+
+        assert_includes migration, 'ActiveRecord::Migration[8.1]', "#{file} did not get the version written into it"
+      end
+    end
+  end
+
+  private
+    # install_migrations asks the application which Rails it is on.
+    def fake_rails(dir)
+      FileUtils.mkdir_p("#{dir}/bin")
+      File.write("#{dir}/bin/rails", "#!/bin/sh\necho 'Rails 8.1.0'\n")
+      FileUtils.chmod(0o755, "#{dir}/bin/rails")
+    end
 end

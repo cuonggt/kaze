@@ -126,4 +126,12 @@ kaze upgrade react
 
 It lists the files an earlier Kaze installed that this version no longer ships, waits for you to agree, removes them, and then runs the normal install. Only files Kaze itself shipped are ever listed — anything you added alongside them is untouched, and a directory is removed only once it is empty. Pass `--dry-run` to see the list and stop, or `--force` to skip the prompt in a script.
 
+An upgrade can bring migrations with it, so run them afterwards:
+
+```
+bin/rails db:prepare
+```
+
+Upgrading to 2.2 in particular adds the columns two factor authentication needs. Until they are applied, the settings page and the login challenge are reading columns the database does not have.
+
 Upgrading from 1.x to 2.x matters on the React stack in particular: `tsc` typechecks every file under `app/javascript`, so the old `Pages/Profile/Edit.tsx` fails the build until it is gone.

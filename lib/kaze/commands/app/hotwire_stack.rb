@@ -79,8 +79,7 @@ class Kaze::Commands::App::HotwireStack < Kaze::Commands::App::BaseStack
     FileUtils.copy_file("#{stubs_path}/default/Procfile.dev", "#{Dir.pwd}/Procfile.dev")
     return unless run_command("#{Dir.pwd}/bin/rails tailwindcss:build").success?
 
-    say ''
-    say 'Kaze scaffolding installed successfully.', :green
+    say_installed_successfully
 
     true
   end
