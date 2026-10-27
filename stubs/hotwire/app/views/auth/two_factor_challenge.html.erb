@@ -1,0 +1,21 @@
+<% content_for(:title, 'Two factor authentication') %>
+<div class="mb-4 text-sm text-muted-foreground">
+  Enter the code from your authenticator app to finish signing in.
+</div>
+<%= form_with model: @form, url: two_factor_challenge_store_path do |form| %>
+  <div>
+    <%= render(InputLabelComponent.new({ for: "code", value: "Code" })) %>
+    <%= render(TextInputComponent.new({ id: "code", class: "block mt-1 w-full", type: "text", name: "code", inputmode: "numeric", autocomplete: "one-time-code", autofocus: true })) %>
+    <%= render(InputErrorComponent.new({ class: "mt-2", message: @form.error_messages[:code] })) %>
+  </div>
+  <div class="mt-4">
+    <%= render(InputLabelComponent.new({ for: "recovery_code", value: "Or a recovery code" })) %>
+    <%= render(TextInputComponent.new({ id: "recovery_code", class: "block mt-1 w-full", type: "text", name: "recovery_code", autocomplete: "one-time-code" })) %>
+    <%= render(InputErrorComponent.new({ class: "mt-2", message: @form.error_messages[:recovery_code] })) %>
+  </div>
+  <div class="flex items-center justify-end mt-4">
+    <%= render(PrimaryButtonComponent.new({ class: "ms-4" })) do %>
+      Continue
+    <% end %>
+  </div>
+<% end %>

@@ -19,6 +19,9 @@ Rails.application.routes.draw do
   post 'verify-email', to: 'auth/email_verification_notification#create', as: :verification_send
   get 'verify-email/:id/:hash', to: 'auth/verified_email#create', as: :verification_verify
 
+  get 'two-factor-challenge', to: 'auth/two_factor_challenge#new', as: :two_factor_challenge
+  post 'two-factor-challenge', to: 'auth/two_factor_challenge#create', as: :two_factor_challenge_store
+
   post 'logout', to: 'auth/authenticated_session#destroy', as: :logout
 
   get 'dashboard', to: 'dashboard#index', as: :dashboard
