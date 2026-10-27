@@ -8,6 +8,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Internal
 
+- CI now tests an upgrade, not just an install. A `Test Upgrade` job per stack creates a Rails application, installs the **released** gem into it, writes work of the application's own beside Kaze's, upgrades with the checkout under review, and then checks every one of those files is byte for byte what it was before running the application's test suite. No version is pinned, so it never goes stale; once a release matches the checkout the job becomes the re-run case, which is how `config/environments/test.rb` came to be emptied.
+
+  The fixture moved to `test/support/own_work.rb` and is now shared with the gem's unit tests, so the two cannot drift, and `ruby test/support/own_work.rb verify .` is what the job runs. Every file in it is inert on purpose: the job boots, typechecks and tests a real application, so a fixture needing a column or a JSX runtime would fail the job for reasons that have nothing to do with upgrading.
+
+  Checked against the code 2.2.1 fixed, which is the point of it. Upgrading with 2.2.0 leaves the verify step reporting `109 bytes became 0` and exiting 1, while the upgrade command itself still exits 0 — and the test step fails separately, because an emptied `test.rb` stops the application booting at all. Against master both pass.
+
 - The gem's tests now run install and upgrade over an application that has work of its own, rather than an empty directory. A shared `OWN_WORK` fixture puts a couple of migrations, a model, a component, an initializer, a factory and two tests in the same directories Kaze writes to, and `assert_own_work_untouched` checks every one of them byte for byte afterwards.
 
   This is the gap behind 2.2.1. The migration rewrite emptied an application's own migrations for two years, and nothing caught it because every fixture and every upgrade test held nothing but Kaze's own files — there was no one else's work there to destroy. The same blind spot covered `install_tests` copying over someone's tests and `enable_test_cache_store` truncating a config file.
