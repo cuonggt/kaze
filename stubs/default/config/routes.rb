@@ -36,6 +36,12 @@ Rails.application.routes.draw do
     get 'password', to: 'password#edit', as: :password_edit
     put 'password', to: 'password#update', as: :password_update
 
+    get 'two-factor', to: 'two_factor#edit', as: :two_factor_edit
+    post 'two-factor', to: 'two_factor#create', as: :two_factor_store
+    patch 'two-factor', to: 'two_factor#update', as: :two_factor_update
+    delete 'two-factor', to: 'two_factor#destroy', as: :two_factor_destroy
+    post 'two-factor/recovery-codes', to: 'two_factor#recovery_codes', as: :two_factor_recovery_codes
+
     get 'appearance', to: 'appearance#edit', as: :appearance_edit
   end
 end

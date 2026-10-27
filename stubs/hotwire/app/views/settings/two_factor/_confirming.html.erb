@@ -1,0 +1,20 @@
+<p class="text-sm text-muted-foreground">
+  Scan this with your authenticator app, then enter the code it shows to finish turning it on.
+</p>
+<div class="w-44 rounded-lg border border-sidebar-border/70 bg-white p-2 dark:border-sidebar-border">
+  <%= raw Current.auth.user.two_factor_qr_code_svg %>
+</div>
+<p class="text-sm text-muted-foreground">
+  Cannot scan it? Enter this key instead:
+  <code class="rounded bg-muted px-1.5 py-0.5 font-mono text-xs text-foreground"><%= Current.auth.user.two_factor_secret %></code>
+</p>
+<%= form_with model: @confirm_form, url: two_factor_update_path, method: :patch, class: "space-y-6" do %>
+  <div>
+    <%= render(InputLabelComponent.new({ for: "code", value: "Code" })) %>
+    <%= render(TextInputComponent.new({ id: "code", class: "mt-1 block w-full max-w-xs", type: "text", name: "code", inputmode: "numeric", autocomplete: "one-time-code", autofocus: true })) %>
+    <%= render(InputErrorComponent.new({ class: "mt-2", message: @confirm_form.error_messages[:code] })) %>
+  </div>
+  <%= render(PrimaryButtonComponent.new) do %>
+    Confirm
+  <% end %>
+<% end %>

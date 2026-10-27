@@ -1,0 +1,8 @@
+<p class="text-sm text-muted-foreground">
+  Two factor authentication is off. Turn it on and you will be asked for a code from your authenticator app each time you sign in.
+</p>
+<%= form_with url: two_factor_store_path, method: :post do %>
+  <%= render(PrimaryButtonComponent.new) do %>
+    Turn on two factor authentication
+  <% end %>
+<% end %>

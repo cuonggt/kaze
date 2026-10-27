@@ -8,6 +8,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Added
 
+- A two factor settings page, at `/settings/two-factor` and in the settings sub-navigation, where two factor can be turned on and off. Turning it on shows a QR code to scan and the key to type if scanning is not possible, and is not finished until a code from the authenticator app is confirmed. Once on, the page lists the eight recovery codes and can regenerate them.
+
+  Turning it off asks for the current password. Removing a protection should take more than a session someone else may be holding.
+
 - A two factor challenge in the login flow. Where a user has two factor enabled, a correct password no longer starts a session: it holds them in a challenge and asks for a code from their authenticator app, or one of their recovery codes. Users without two factor are unaffected and log straight in as before.
 
   `SessionGuard#attempt` has been split, so `validate` checks credentials and returns the user without starting a session, and `attempt` is that plus `login`. `Auth::LoginForm` uses the first and exposes the user it found, leaving the controller to decide whether a second factor is still owed. A `TwoFactorChallenge` object holds the pending user in the session and nothing else, so an abandoned challenge grants nothing, and it expires after five minutes because a challenge left open is a password already given. The session id is rotated when the challenge completes, so a session fixed before the password was given cannot survive the second factor.
