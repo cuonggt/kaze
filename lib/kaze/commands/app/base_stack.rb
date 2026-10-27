@@ -85,9 +85,11 @@ class Kaze::Commands::App::BaseStack
   def install_tests
     ensure_directory_exists("#{Dir.pwd}/test/factories")
     ensure_directory_exists("#{Dir.pwd}/test/integration")
+    ensure_directory_exists("#{Dir.pwd}/test/models")
     FileUtils.copy_file("#{stubs_path}/default/test/test_helper.rb", "#{Dir.pwd}/test/test_helper.rb")
     FileUtils.copy_entry("#{stubs_path}/default/test/factories", "#{Dir.pwd}/test/factories")
     FileUtils.copy_entry("#{stubs_path}/default/test/integration", "#{Dir.pwd}/test/integration")
+    FileUtils.copy_entry("#{stubs_path}/default/test/models", "#{Dir.pwd}/test/models")
   end
 
   def ensure_directory_exists(path)

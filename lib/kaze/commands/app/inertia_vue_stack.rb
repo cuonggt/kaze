@@ -26,7 +26,7 @@ class Kaze::Commands::App::InertiaVueStack < Kaze::Commands::App::BaseStack
   def install
     # Gems...
     return unless remove_gems([ 'sprockets-rails', 'turbo-rails', 'stimulus-rails' ])
-    return unless install_gems([ 'propshaft', 'inertia_rails', 'vite_rails', 'dotenv', 'bcrypt', 'js-routes' ])
+    return unless install_gems([ 'propshaft', 'inertia_rails', 'vite_rails', 'dotenv', 'bcrypt', 'rotp', 'rqrcode', 'js-routes' ])
     return unless run_bundle_command("#{bundle_command} add tailwindcss-rails --version=\"~> 4.0\"").success?
     return unless install_gems([ 'factory_bot_rails', 'faker' ], 'development, test')
 
@@ -80,6 +80,7 @@ class Kaze::Commands::App::InertiaVueStack < Kaze::Commands::App::BaseStack
     FileUtils.copy_file("#{stubs_path}/inertia-common/config/vite.json", "#{Dir.pwd}/config/vite.json")
     ensure_directory_exists("#{Dir.pwd}/config/initializers")
     FileUtils.copy_file("#{stubs_path}/inertia-common/config/initializers/inertia_rails.rb", "#{Dir.pwd}/config/initializers/inertia_rails.rb")
+    FileUtils.copy_file("#{stubs_path}/default/config/initializers/active_record_encryption.rb", "#{Dir.pwd}/config/initializers/active_record_encryption.rb")
     FileUtils.copy_file("#{stubs_path}/inertia-vue-ts/components.json", "#{Dir.pwd}/components.json")
     FileUtils.copy_file("#{stubs_path}/inertia-vue-ts/tsconfig.json", "#{Dir.pwd}/tsconfig.json")
     FileUtils.copy_file("#{stubs_path}/inertia-vue-ts/vite.config.ts", "#{Dir.pwd}/vite.config.ts")
